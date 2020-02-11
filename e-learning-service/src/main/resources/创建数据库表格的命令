@@ -1,0 +1,11 @@
+CREATE TABLE `question` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` int(11) NOT NULL,
+  `content` varchar(1000) NOT NULL,
+  `append` varchar(1000) DEFAULT NULL,
+  `answer` varchar(5000) DEFAULT NULL,
+  `note` varchar(5000) DEFAULT NULL,
+  `labels` varchar(5000) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
