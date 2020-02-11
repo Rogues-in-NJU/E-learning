@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.alibaba.fastjson.JSON;
 
 import javax.validation.Valid;
+import java.net.URLDecoder;
 import java.util.List;
 
 @Slf4j
@@ -54,8 +55,13 @@ public class QuestionController {
      */
     @ResponseBody
     @RequestMapping(value = "", method = RequestMethod.POST, name = "录入题目")
-    public String addQuestion(@Valid @RequestBody Question question) {
+    public String addQuestion(@Valid @RequestBody String questionStr) {
         try {
+            System.out.println("before decode:" + questionStr);
+            String questionStrDecoded = URLDecoder.decode(questionStr, "utf-8");
+            questionStrDecoded = questionStrDecoded.substring(0, questionStrDecoded.length() - 1);
+            System.out.println("after  decode:" + questionStrDecoded);
+            Question question = JSON.parseObject(questionStrDecoded, Question.class);
             int result = questionService.saveQuestion(question);
             return JSON.toJSONString(result);
         } catch (Exception e) {
