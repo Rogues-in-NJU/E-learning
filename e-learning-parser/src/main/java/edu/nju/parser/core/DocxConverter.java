@@ -1,6 +1,7 @@
 package edu.nju.parser.core;
 
 import com.google.common.base.Preconditions;
+import edu.nju.parser.common.Paragraph;
 import edu.nju.parser.core.plugin.Plugin;
 import edu.nju.parser.core.plugin.PostConvertPlugin;
 import edu.nju.parser.core.plugin.PreConvertPlugin;
@@ -11,9 +12,14 @@ import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class DocxConverter {
 
@@ -52,6 +58,21 @@ public class DocxConverter {
         }
     }
 
+    public List<Paragraph> convert2Paragraphs() {
+        Document document = convert2Html();
+        if (Objects.isNull(document)) {
+            return null;
+        }
+        Elements elements = document.select("p");
+        return elements.stream().map(e -> {
+            Paragraph p = Paragraph.builder()
+                    .innerText(Jsoup.parse(e.html()).text())
+                    .originElement(e)
+                    .build();
+            return p;
+        }).collect(Collectors.toList());
+    }
+
     public void docxFile2HtmlFile() throws Docx4JException, FileNotFoundException {
         WordprocessingMLPackage wordMLPackage = Docx4J.load(new File(config.getDocxFilePath()));
 
@@ -71,6 +92,10 @@ public class DocxConverter {
 
         Docx4jProperties.setProperty("docx4j.Convert.Out.HTML.OutputMethodXML", true);
         Docx4J.toHTML(htmlSettings, os, Docx4J.FLAG_EXPORT_PREFER_XSL);
+    }
+
+    private void toInnerText(StringBuilder sb, Element e) {
+
     }
 
 }

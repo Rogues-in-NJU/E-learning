@@ -1,7 +1,9 @@
 package edu.nju.parser.core;
 
-import org.jsoup.nodes.Document;
+import edu.nju.parser.common.Paragraph;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 public class DocxConverterTest {
 
@@ -12,8 +14,11 @@ public class DocxConverterTest {
         DocxConverterConfig.DocxConverterConfigBuilder builder
                 = DocxConverterConfig.builder(baseDir + "/demo.docx", baseDir + "/html");
         DocxConverter converter = new DocxConverter(builder.build());
-        Document document = converter.convert2Html();
-        System.out.println(document.toString());
+        // Document document = converter.convert2Html();
+        List<Paragraph> paragraphs = converter.convert2Paragraphs();
+        for (Paragraph p: paragraphs) {
+            System.out.println(p.getInnerText());
+        }
     }
 
 }
