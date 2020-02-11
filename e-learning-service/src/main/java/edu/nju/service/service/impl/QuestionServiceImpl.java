@@ -1,12 +1,13 @@
 package edu.nju.service.service.impl;
 
-import edu.nju.learning.entity.Question;
-import edu.nju.learning.repo.QuestionRepository;
+import edu.nju.service.entity.Question;
+import edu.nju.service.repo.QuestionRepository;
 import edu.nju.service.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 
 @Service
 public class QuestionServiceImpl implements QuestionService {
@@ -15,13 +16,14 @@ public class QuestionServiceImpl implements QuestionService {
     QuestionRepository questionRepository;
 
     @Override
-    public List<Question> getQuestionList() {
-        return null;
+    public List<Question> getQuestionList()
+    {
+        return questionRepository.findAll();
     }
 
     @Override
     public Question getQuestion(Integer id) {
-        return null;
+        return questionRepository.getOne(id);
     }
 
     @Override
