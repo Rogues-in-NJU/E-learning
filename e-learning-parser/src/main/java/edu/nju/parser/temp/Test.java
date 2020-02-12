@@ -10,6 +10,7 @@ public class Test {
         recognition.stem();
         recognition.options();
         recognition.answer();
+        recognition.options();
         recognition.notes();
     }
 }
