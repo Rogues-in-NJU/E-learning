@@ -3,9 +3,9 @@ package edu.nju.parser.enums;
 public enum QuestionPartTypeEnum {
 
     STEM(1, "题干"),
-    OPTION(1, "选项"),
-    ANSWER(1, "答案"),
-    NOTE(1, "讲义");
+    OPTION(2, "选项"),
+    ANSWER(3, "答案"),
+    NOTE(4, "讲义");
 
     private int code;
     private String name;

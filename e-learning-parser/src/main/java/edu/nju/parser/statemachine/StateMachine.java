@@ -7,11 +7,17 @@ import edu.nju.parser.statemachine.state.AnswerState;
 import edu.nju.parser.statemachine.state.NoteState;
 import edu.nju.parser.statemachine.state.OptionState;
 import edu.nju.parser.statemachine.state.StemState;
+import java.edu.nju.parser.util.ParagraphType;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class StateMachine {
 
     // previous - event - next
     static Table<StateObject, QuestionPartTypeEnum, StateObject> rules = HashBasedTable.create();
+
+    static Map<ParagraphType, QuestionPartTypeEnum> eventMap = new HashMap<>();
 
     static StemState    stemState       =     new StemState();
     static OptionState  optionState     =   new OptionState();
@@ -39,13 +45,26 @@ public class StateMachine {
         rules.put(noteState, QuestionPartTypeEnum.STEM,     stemState);
     }
 
+    {
+        eventMap.put(ParagraphType.ChapterTitle, QuestionPartTypeEnum.STEM);
+        eventMap.put(ParagraphType.AnswerTitle, QuestionPartTypeEnum.ANSWER);
+        eventMap.put(ParagraphType.Content, QuestionPartTypeEnum.STEM);
+        eventMap.put(ParagraphType.SubContent, QuestionPartTypeEnum.STEM);
+        eventMap.put(ParagraphType.Append, QuestionPartTypeEnum.STEM);
+        eventMap.put(ParagraphType.Answer, QuestionPartTypeEnum.ANSWER);
+        eventMap.put(ParagraphType.Note, QuestionPartTypeEnum.NOTE);
+        eventMap.put(ParagraphType.Other, QuestionPartTypeEnum.STEM);
+
+    }
+
     public StateMachine(StateMachineContext context){
         this.context = context;
     }
 
-    public void execute(QuestionPartTypeEnum questionPartTypeEnum){
+    public void execute(ParagraphType paragraphType){
 
         StateObject previousState = context.getPreviousObj();
+        QuestionPartTypeEnum questionPartTypeEnum = eventMap.get(paragraphType);
         StateObject nextState = rules.get(previousState, questionPartTypeEnum);
 
         if(nextState == null){
