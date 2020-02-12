@@ -67,6 +67,8 @@ public class DocxConverter {
         return elements.stream().map(e -> {
             Paragraph p = Paragraph.builder()
                     .innerText(Jsoup.parse(e.html()).text())
+                    .html(e.html())
+                    .html(e.outerHtml())
                     .originElement(e)
                     .build();
             return p;

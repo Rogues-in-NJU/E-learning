@@ -1,5 +1,8 @@
 package edu.nju.parser.enums;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public enum QuestionPartTypeEnum {
 
     STEM(1, "题干"),
