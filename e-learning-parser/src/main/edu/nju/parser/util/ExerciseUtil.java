@@ -2,14 +2,19 @@ package edu.nju.parser.util;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.edu.nju.parser.util.ParagraphType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
 public class ExerciseUtil {
 
-    public static void main(String[] args) {
-        System.out.println(isContent(" 【附加题】 已知关于 的方程 \n"));
+    public static ParagraphType getParagraphType(String paragraph) {
+        if (isContent(paragraph)) return ParagraphType.Content;
+        if (isAppend(paragraph)) return ParagraphType.Append;
+        if (isAnswer(paragraph)) return ParagraphType.Answer;
+        if (isNote(paragraph)) return ParagraphType.Note;
+        return ParagraphType.Other;
     }
 
     /**
