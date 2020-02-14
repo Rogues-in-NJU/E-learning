@@ -105,7 +105,7 @@ public class Split {
                     time++;
                 }
                 System.out.println("paragraph:" + paragraph);
-                System.out.println("paragraph is content?" + ExerciseUtil.isContent(paragraph));
+                // System.out.println("paragraph is content?" + ExerciseUtil.isContent(paragraph));
                 Line l = new Line();
                 l.content = paragraph;
                 lss.add(l);

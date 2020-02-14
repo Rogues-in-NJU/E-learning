@@ -53,6 +53,12 @@
             <artifactId>jsoup</artifactId>
             <version>1.12.2</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.axet</groupId>
+            <artifactId>java-unrar</artifactId>
+            <version>1.7.0-8</version>
+        </dependency>
     </dependencies>
 
 </project>
