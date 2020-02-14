@@ -5,6 +5,7 @@ import edu.nju.parser.common.Paragraph;
 import edu.nju.parser.core.plugin.Plugin;
 import edu.nju.parser.core.plugin.PostConvertPlugin;
 import edu.nju.parser.core.plugin.PreConvertPlugin;
+import lombok.extern.slf4j.Slf4j;
 import org.docx4j.Docx4J;
 import org.docx4j.Docx4jProperties;
 import org.docx4j.convert.out.HTMLSettings;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class DocxConverter {
 
     private DocxConverterConfig config;
@@ -39,7 +41,7 @@ public class DocxConverter {
         try {
             docxFile2HtmlFile();
         } catch (Docx4JException | FileNotFoundException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
             return null;
         }
         for (Plugin p : config.getPlugins()) {
@@ -47,13 +49,14 @@ public class DocxConverter {
                 ((PostConvertPlugin) p).postConvert(config);
             }
         }
-        File htmlFile = new File(config.getHtmlFileOutputDirPath() + "/" + config.getHtmlFileName());
+        File htmlFile = new File(config.getHtmlFileOutputDirPath() + File.pathSeparator + config.getHtmlFileName());
         if (!htmlFile.exists()) {
             return null;
         }
         try {
             return Jsoup.parse(htmlFile, StandardCharsets.UTF_8.name());
         } catch (IOException e) {
+            log.error(e.getMessage(), e);
             return null;
         }
     }
@@ -76,6 +79,7 @@ public class DocxConverter {
     }
 
     public void docxFile2HtmlFile() throws Docx4JException, FileNotFoundException {
+        log.debug("Start convert docx file [{}] to html file [{}]", config.getDocxFilePath(), config.getHtmlFileOutputDirPath());
         WordprocessingMLPackage wordMLPackage = Docx4J.load(new File(config.getDocxFilePath()));
 
         HTMLSettings htmlSettings = Docx4J.createHTMLSettings();
@@ -90,7 +94,7 @@ public class DocxConverter {
         }
 
         OutputStream os;
-        os = new FileOutputStream(config.getHtmlFileOutputDirPath() + "/" + config.getHtmlFileName());
+        os = new FileOutputStream(config.getHtmlFileOutputDirPath() + File.pathSeparator + config.getHtmlFileName());
 
         Docx4jProperties.setProperty("docx4j.Convert.Out.HTML.OutputMethodXML", true);
         Docx4J.toHTML(htmlSettings, os, Docx4J.FLAG_EXPORT_PREFER_XSL);
