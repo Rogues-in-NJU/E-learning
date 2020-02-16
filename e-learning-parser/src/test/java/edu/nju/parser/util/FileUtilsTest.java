@@ -8,7 +8,7 @@ public class FileUtilsTest {
 
     @Test
     public void test() {
-        List<String> files = FileUtil.getAllFileName("/Users/hermc/Documents/University/Lab/Report/慕测Web应用验收评价系统");
+        List<String> files = FileUtil.getAllFileName("./");
         files.forEach(f -> {
             System.out.println(f);
             System.out.println(TagUtil.extract(f).toString());
