@@ -7,7 +7,7 @@ import edu.nju.parser.statemachine.state.AnswerState;
 import edu.nju.parser.statemachine.state.NoteState;
 import edu.nju.parser.statemachine.state.OptionState;
 import edu.nju.parser.statemachine.state.StemState;
-import java.edu.nju.parser.util.ParagraphType;
+import edu.nju.parser.util.ParagraphType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,19 +53,23 @@ public class StateMachine {
         eventMap.put(ParagraphType.Append, QuestionPartTypeEnum.STEM);
         eventMap.put(ParagraphType.Answer, QuestionPartTypeEnum.ANSWER);
         eventMap.put(ParagraphType.Note, QuestionPartTypeEnum.NOTE);
-        eventMap.put(ParagraphType.Other, QuestionPartTypeEnum.STEM);
+//        eventMap.put(ParagraphType.Other, QuestionPartTypeEnum.STEM);
 
     }
 
     public StateMachine(StateMachineContext context){
         this.context = context;
+        this.context.setPreviousObj(stemState);
     }
 
     public void execute(ParagraphType paragraphType){
 
         StateObject previousState = context.getPreviousObj();
         QuestionPartTypeEnum questionPartTypeEnum = eventMap.get(paragraphType);
-        StateObject nextState = rules.get(previousState, questionPartTypeEnum);
+        StateObject nextState = null;
+        if(questionPartTypeEnum != null){
+            nextState = rules.column(questionPartTypeEnum).get(previousState);
+        }
 
         if(nextState == null){
             //不符合规则的特殊行，无法判断，暂时归于上一类
