@@ -59,6 +59,12 @@
             <artifactId>java-unrar</artifactId>
             <version>1.7.0-8</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.huaban</groupId>
+            <artifactId>jieba-analysis</artifactId>
+            <version>1.0.2</version>
+        </dependency>
     </dependencies>
 
 </project>
