@@ -53,7 +53,7 @@ public class StateMachine {
         eventMap.put(ParagraphType.Append, QuestionPartTypeEnum.STEM);
         eventMap.put(ParagraphType.Answer, QuestionPartTypeEnum.ANSWER);
         eventMap.put(ParagraphType.Note, QuestionPartTypeEnum.NOTE);
-        eventMap.put(ParagraphType.Other, QuestionPartTypeEnum.STEM);
+//        eventMap.put(ParagraphType.Other, QuestionPartTypeEnum.STEM);
 
     }
 
@@ -66,7 +66,10 @@ public class StateMachine {
 
         StateObject previousState = context.getPreviousObj();
         QuestionPartTypeEnum questionPartTypeEnum = eventMap.get(paragraphType);
-        StateObject nextState = rules.column(questionPartTypeEnum).get(previousState);
+        StateObject nextState = null;
+        if(questionPartTypeEnum != null){
+            nextState = rules.column(questionPartTypeEnum).get(previousState);
+        }
 
         if(nextState == null){
             //不符合规则的特殊行，无法判断，暂时归于上一类
