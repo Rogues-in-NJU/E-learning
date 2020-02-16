@@ -1,6 +1,7 @@
 package edu.nju.parser.statemachine;
 
 import edu.nju.parser.enums.QuestionPartTypeEnum;
+import edu.nju.parser.statemachine.state.StemState;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,7 @@ public class StateMachineContext {
     private String line;
 
     public StateMachineContext(){
-        previousObj = null;
+        previousObj = new StemState();
         questionParts = new HashMap<>();
         questionParts.put(QuestionPartTypeEnum.STEM, new StringBuilder());
         questionParts.put(QuestionPartTypeEnum.OPTION, new StringBuilder());
