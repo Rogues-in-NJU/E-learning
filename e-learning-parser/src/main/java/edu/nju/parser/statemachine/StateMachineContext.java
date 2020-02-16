@@ -17,7 +17,7 @@ public class StateMachineContext {
     private String line;
 
     public StateMachineContext(){
-        previousObj = new StemState();
+        previousObj = null;
         questionParts = new HashMap<>();
         questionParts.put(QuestionPartTypeEnum.STEM, new StringBuilder());
         questionParts.put(QuestionPartTypeEnum.OPTION, new StringBuilder());
@@ -33,7 +33,18 @@ public class StateMachineContext {
 
     public String generateQuestionContent(){
         //todo 题目各部分以怎么样的形式存储进 content里
-        return "todo";
+        String stem = questionParts.get(QuestionPartTypeEnum.STEM).toString();
+        String option = questionParts.get(QuestionPartTypeEnum.OPTION).toString();
+        String answer = questionParts.get(QuestionPartTypeEnum.ANSWER).toString();
+        String note = questionParts.get(QuestionPartTypeEnum.NOTE).toString();
+
+        String result = "new question ========== \n" +
+                "stem :" + stem + "\n" +
+                "option :" + option + "\n" +
+                "answer :" + answer + "\n" +
+                "note :" + note + "\n"
+                + "================================";
+        return result;
     }
 
     public void clearQuestionMap(){

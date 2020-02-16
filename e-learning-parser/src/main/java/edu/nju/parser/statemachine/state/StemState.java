@@ -20,6 +20,7 @@ public class StemState extends StateObject {
         if (!this.equals(context.getPreviousObj())){
             //todo 存储题目
             String questionContent = context.generateQuestionContent();
+            System.out.println(questionContent);
             context.clearQuestionMap();
         }
 
