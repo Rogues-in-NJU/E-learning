@@ -46,7 +46,7 @@ public class DocxConverter {
                 ((PostConvertPlugin) p).postConvert(config);
             }
         }
-        File htmlFile = new File(config.getHtmlFileOutputDirPath() + File.pathSeparator + config.getHtmlFileName());
+        File htmlFile = new File(config.getHtmlFileOutputDirPath() + File.separator + config.getHtmlFileName());
         if (!htmlFile.exists()) {
             throw new FileNotFoundException(String.format("HTML文件 [%s] 未找到!", htmlFile.getCanonicalPath()));
         }
@@ -86,7 +86,7 @@ public class DocxConverter {
         }
 
         OutputStream os;
-        os = new FileOutputStream(config.getHtmlFileOutputDirPath() + File.pathSeparator + config.getHtmlFileName());
+        os = new FileOutputStream(config.getHtmlFileOutputDirPath() + File.separator + config.getHtmlFileName());
 
         Docx4jProperties.setProperty("docx4j.Convert.Out.HTML.OutputMethodXML", true);
         Docx4J.toHTML(htmlSettings, os, Docx4J.FLAG_EXPORT_PREFER_XSL);
