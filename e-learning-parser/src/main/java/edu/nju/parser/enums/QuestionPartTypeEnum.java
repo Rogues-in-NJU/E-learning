@@ -14,7 +14,6 @@ public enum QuestionPartTypeEnum {
     private int code;
     private String name;
 
-
     public static QuestionPartTypeEnum of(int code) {
         for (QuestionPartTypeEnum item : QuestionPartTypeEnum.values()) {
             if (item.code == code) {

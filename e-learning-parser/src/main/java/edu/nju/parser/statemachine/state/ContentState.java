@@ -17,10 +17,10 @@ public class ContentState extends StateObject {
      */
     public void execute(StateMachineContext context){
 
-            //todo 存储题目
-            String questionContent = context.generateQuestionContent();
-            System.out.println(questionContent);
-            context.clearQuestionMap();
+        //todo 存储题目
+        String questionContent = context.generateQuestionContent();
+        System.out.println(questionContent);
+        context.clearQuestionMap();
 
         //可能是新的题干了
         super.execute(context);
