@@ -71,4 +71,9 @@ public class StateMachine {
         nextState.afterAction(context);
 
     }
+
+    public void close(){
+        System.out.println(context.generateQuestionContent(););
+        context.clearQuestionMap();
+    }
 }

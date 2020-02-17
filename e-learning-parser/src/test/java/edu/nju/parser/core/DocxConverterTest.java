@@ -33,6 +33,7 @@ public class DocxConverterTest {
                 context.setLine(p);
                 stateMachine.execute(ExerciseUtil.getParagraphType(p));
             }
+            stateMachine.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
