@@ -1,5 +1,6 @@
 package edu.nju.parser.statemachine;
 
+import edu.nju.parser.common.Paragraph;
 import edu.nju.parser.enums.QuestionPartTypeEnum;
 
 import java.util.HashMap;
@@ -13,7 +14,7 @@ public class StateMachineContext {
     private Map<QuestionPartTypeEnum, StringBuilder> questionParts;
 
     //当前处理的一行
-    private String line;
+    private Paragraph line;
 
     public StateMachineContext(){
         previousObj = null;
@@ -22,12 +23,10 @@ public class StateMachineContext {
         questionParts.put(QuestionPartTypeEnum.APPEND, new StringBuilder());
         questionParts.put(QuestionPartTypeEnum.ANSWER, new StringBuilder());
         questionParts.put(QuestionPartTypeEnum.NOTE, new StringBuilder());
-        line = "";
     }
 
     public void addLineToMap(QuestionPartTypeEnum questionPartTypeEnum){
         questionParts.get(questionPartTypeEnum).append(line);
-        line = "";
     }
 
     public String generateQuestionContent(){
@@ -53,11 +52,11 @@ public class StateMachineContext {
         questionParts.put(QuestionPartTypeEnum.NOTE, new StringBuilder());
     }
 
-    public String getLine() {
+    public Paragraph getLine() {
         return line;
     }
 
-    public void setLine(String line) {
+    public void setLine(Paragraph line) {
         this.line = line;
     }
 

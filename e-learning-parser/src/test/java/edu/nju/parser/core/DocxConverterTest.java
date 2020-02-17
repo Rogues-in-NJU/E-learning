@@ -29,10 +29,9 @@ public class DocxConverterTest {
             for (Paragraph p: paragraphs) {
                 // 解析出一行后 调用 正则判断 出类别
                 // 然后用状态机辅助判断
-                String line = p.getInnerText();
-                System.out.println(line);
-                context.setLine(line);
-                stateMachine.execute(ExerciseUtil.getParagraphType(line));
+                System.out.println(p.getInnerText());
+                context.setLine(p);
+                stateMachine.execute(ExerciseUtil.getParagraphType(p));
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());

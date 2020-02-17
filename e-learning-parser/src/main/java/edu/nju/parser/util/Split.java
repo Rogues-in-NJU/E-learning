@@ -54,8 +54,8 @@ public class Split {
                 // 然后用状态机辅助判断
                 String line = l.getContent();
                 System.out.println(line);
-                context.setLine(line);
-                stateMachine.execute(ExerciseUtil.getParagraphType(line));
+//                context.setLine(line);
+//                stateMachine.execute(ExerciseUtil.getParagraphType(line));
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
