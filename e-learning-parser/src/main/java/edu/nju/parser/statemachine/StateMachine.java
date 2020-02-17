@@ -23,22 +23,22 @@ public class StateMachine {
         rules.put(contentState, QuestionPartTypeEnum.ANSWER,   answerState);
         rules.put(contentState, QuestionPartTypeEnum.NOTE,     noteState);
         rules.put(contentState, QuestionPartTypeEnum.CONTENT,  contentState);
-        rules.put(contentState, QuestionPartTypeEnum.OTHER,    contentState);
+        rules.put(contentState, QuestionPartTypeEnum.OTHER,    otherState);
 
         rules.put(appendState, QuestionPartTypeEnum.APPEND, appendState);
         rules.put(appendState, QuestionPartTypeEnum.ANSWER, answerState);
         rules.put(appendState, QuestionPartTypeEnum.NOTE,   noteState);
         rules.put(appendState, QuestionPartTypeEnum.CONTENT,contentState);
-        rules.put(appendState, QuestionPartTypeEnum.OTHER,  appendState);
+        rules.put(appendState, QuestionPartTypeEnum.OTHER,  otherState);
 
         rules.put(answerState, QuestionPartTypeEnum.CONTENT,contentState);
         rules.put(answerState, QuestionPartTypeEnum.NOTE,   noteState);
         rules.put(answerState, QuestionPartTypeEnum.ANSWER, answerState);
-        rules.put(answerState, QuestionPartTypeEnum.OTHER,  answerState);
+        rules.put(answerState, QuestionPartTypeEnum.OTHER,  otherState);
 
         rules.put(noteState, QuestionPartTypeEnum.NOTE,     noteState);
         rules.put(noteState, QuestionPartTypeEnum.CONTENT,  contentState);
-        rules.put(noteState, QuestionPartTypeEnum.OTHER,    noteState);
+        rules.put(noteState, QuestionPartTypeEnum.OTHER,    otherState);
 
         //other
         rules.put(otherState, QuestionPartTypeEnum.APPEND,   appendState);
