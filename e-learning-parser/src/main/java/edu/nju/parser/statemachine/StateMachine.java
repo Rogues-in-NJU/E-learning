@@ -73,7 +73,7 @@ public class StateMachine {
     }
 
     public void close(){
-        System.out.println(context.generateQuestionContent(););
+        System.out.println(context.generateQuestionContent());
         context.clearQuestionMap();
     }
 }
