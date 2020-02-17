@@ -25,7 +25,7 @@ public class DocxConverterTest {
                     = DocxConverterConfig.builder(baseDir + "/demo.docx", baseDir + "/html");
             DocxConverter converter = new DocxConverter(builder.build());
             List<Paragraph> paragraphs = converter.convert2Paragraphs();
-            
+
             for (Paragraph p: paragraphs) {
                 // 解析出一行后 调用 正则判断 出类别
                 // 然后用状态机辅助判断
@@ -37,7 +37,6 @@ public class DocxConverterTest {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
     }
 
 }

@@ -32,18 +32,15 @@ public class DocxConverter {
         this.config = config;
     }
 
-    public Document convert2Html() {
+    public Document convert2Html() throws Docx4JException, IOException {
         for (Plugin p : config.getPlugins()) {
             if (p instanceof PreConvertPlugin) {
                 ((PreConvertPlugin) p).preConvert(config);
             }
         }
-        try {
-            docxFile2HtmlFile();
-        } catch (Docx4JException | FileNotFoundException e) {
-            log.error(e.getMessage(), e);
-            return null;
-        }
+
+        docxFile2HtmlFile();
+
         for (Plugin p : config.getPlugins()) {
             if (p instanceof PostConvertPlugin) {
                 ((PostConvertPlugin) p).postConvert(config);
@@ -51,17 +48,12 @@ public class DocxConverter {
         }
         File htmlFile = new File(config.getHtmlFileOutputDirPath() + File.pathSeparator + config.getHtmlFileName());
         if (!htmlFile.exists()) {
-            return null;
+            throw new FileNotFoundException(String.format("HTML文件 [%s] 未找到!", htmlFile.getCanonicalPath()));
         }
-        try {
-            return Jsoup.parse(htmlFile, StandardCharsets.UTF_8.name());
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-            return null;
-        }
+        return Jsoup.parse(htmlFile, StandardCharsets.UTF_8.name());
     }
 
-    public List<Paragraph> convert2Paragraphs() {
+    public List<Paragraph> convert2Paragraphs() throws Docx4JException, IOException {
         Document document = convert2Html();
         if (Objects.isNull(document)) {
             return null;
