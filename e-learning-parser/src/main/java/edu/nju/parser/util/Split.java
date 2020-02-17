@@ -1,5 +1,8 @@
 package edu.nju.parser.util;
 
+import edu.nju.parser.enums.QuestionPartTypeEnum;
+import edu.nju.parser.statemachine.StateMachine;
+import edu.nju.parser.statemachine.StateMachineContext;
 import org.docx4j.dml.picture.Pic;
 import org.docx4j.dml.wordprocessingDrawing.Inline;
 import org.docx4j.math.CTOMath;
@@ -40,11 +43,19 @@ public class Split {
 
 
     public static void main(String[] args) throws Exception {
+        StateMachineContext context = new StateMachineContext();
+        StateMachine stateMachine = new StateMachine(context);
         List<Line> res = null;
+
         try {
             res = parserDocx(inputFilePath);
             for (Line l : res) {
-                System.out.println(l.getContent());
+                // 解析出一行后 调用 正则判断 出类别
+                // 然后用状态机辅助判断
+                String line = l.getContent();
+                System.out.println(line);
+                context.setLine(line);
+                stateMachine.execute(ExerciseUtil.getParagraphType(line));
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -98,14 +109,11 @@ public class Split {
                 }
                 Object o1 = ((JAXBElement) o).getValue();
             } else if (o instanceof P) {
-                System.out.println("Paragraph object:------------------------------------ ");
                 String paragraph = walkList(((P) o).getContent(), binder);
                 if (time == 0) {
                     title = paragraph;
                     time++;
                 }
-                System.out.println("paragraph:" + paragraph);
-                // System.out.println("paragraph is content?" + ExerciseUtil.isContent(paragraph));
                 Line l = new Line();
                 l.content = paragraph;
                 lss.add(l);
