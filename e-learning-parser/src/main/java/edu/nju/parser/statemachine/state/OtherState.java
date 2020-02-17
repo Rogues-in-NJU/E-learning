@@ -21,6 +21,10 @@ public class OtherState extends StateObject {
         context.addLineToMap(previousObject.getQuestionPart());
     }
 
+    public String getName(){
+        return QuestionPartTypeEnum.OTHER.name();
+    };
+
     public StateObject getPreviousObject() {
         return previousObject;
     }
