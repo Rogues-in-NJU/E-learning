@@ -59,7 +59,7 @@ public class DocxConverter {
             return null;
         }
         Elements elements = document.select("p");
-        return elements.stream().map(e -> {
+        List<Paragraph> paragraphs = elements.stream().map(e -> {
             Paragraph p = Paragraph.builder()
                     .innerText(Jsoup.parse(e.html()).text())
                     .html(e.html())
@@ -68,6 +68,7 @@ public class DocxConverter {
                     .build();
             return p;
         }).collect(Collectors.toList());
+        return paragraphs;
     }
 
     public void docxFile2HtmlFile() throws Docx4JException, FileNotFoundException {

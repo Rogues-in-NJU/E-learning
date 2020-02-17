@@ -5,6 +5,7 @@ import edu.nju.parser.statemachine.StateMachine;
 import edu.nju.parser.statemachine.StateMachineContext;
 import edu.nju.parser.util.ExerciseUtil;
 import edu.nju.parser.util.Split;
+import org.jsoup.Jsoup;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -36,6 +37,11 @@ public class DocxConverterTest {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    @Test
+    public void testBlank() {
+        System.out.println(Jsoup.parse("<img href='test.png'/>").text());
     }
 
 }
