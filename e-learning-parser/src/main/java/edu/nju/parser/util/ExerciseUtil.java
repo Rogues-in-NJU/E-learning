@@ -1,5 +1,6 @@
 package edu.nju.parser.util;
 
+import edu.nju.parser.common.Paragraph;
 import edu.nju.parser.enums.QuestionPartTypeEnum;
 import org.apache.commons.lang3.StringUtils;
 
@@ -9,11 +10,12 @@ import java.util.regex.Pattern;
 
 public class ExerciseUtil {
 
-    public static QuestionPartTypeEnum getParagraphType(String paragraph) {
-        if (isContent(paragraph)) return QuestionPartTypeEnum.CONTENT;
-        if (isAppend(paragraph)) return QuestionPartTypeEnum.APPEND;
-        if (isAnswer(paragraph)) return QuestionPartTypeEnum.ANSWER;
-        if (isNote(paragraph)) return QuestionPartTypeEnum.NOTE;
+    public static QuestionPartTypeEnum getParagraphType(Paragraph paragraph) {
+        String line = paragraph.getInnerText();
+        if (isContent(line)) return QuestionPartTypeEnum.CONTENT;
+        if (isAppend(line)) return QuestionPartTypeEnum.APPEND;
+        if (isAnswer(line)) return QuestionPartTypeEnum.ANSWER;
+        if (isNote(line)) return QuestionPartTypeEnum.NOTE;
         return QuestionPartTypeEnum.OTHER;
     }
 
