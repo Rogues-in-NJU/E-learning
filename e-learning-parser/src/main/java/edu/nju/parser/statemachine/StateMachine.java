@@ -3,10 +3,7 @@ package edu.nju.parser.statemachine;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import edu.nju.parser.enums.QuestionPartTypeEnum;
-import edu.nju.parser.statemachine.state.AnswerState;
-import edu.nju.parser.statemachine.state.AppendState;
-import edu.nju.parser.statemachine.state.ContentState;
-import edu.nju.parser.statemachine.state.NoteState;
+import edu.nju.parser.statemachine.state.*;
 
 public class StateMachine {
 
@@ -17,6 +14,7 @@ public class StateMachine {
     static AppendState  appendState     =   new AppendState();
     static AnswerState  answerState     =   new AnswerState();
     static NoteState    noteState       =   new NoteState();
+    static OtherState   otherState      =   new OtherState();
 
     StateMachineContext context;
 
@@ -25,18 +23,22 @@ public class StateMachine {
         rules.put(contentState, QuestionPartTypeEnum.ANSWER,   answerState);
         rules.put(contentState, QuestionPartTypeEnum.NOTE,     noteState);
         rules.put(contentState, QuestionPartTypeEnum.CONTENT,  contentState);
+        rules.put(contentState, QuestionPartTypeEnum.OTHER,    contentState);
 
         rules.put(appendState, QuestionPartTypeEnum.APPEND, appendState);
         rules.put(appendState, QuestionPartTypeEnum.ANSWER, answerState);
         rules.put(appendState, QuestionPartTypeEnum.NOTE,   noteState);
         rules.put(appendState, QuestionPartTypeEnum.CONTENT,contentState);
+        rules.put(appendState, QuestionPartTypeEnum.OTHER,  appendState);
 
         rules.put(answerState, QuestionPartTypeEnum.CONTENT,contentState);
         rules.put(answerState, QuestionPartTypeEnum.NOTE,   noteState);
         rules.put(answerState, QuestionPartTypeEnum.ANSWER, answerState);
+        rules.put(answerState, QuestionPartTypeEnum.OTHER,  answerState);
 
         rules.put(noteState, QuestionPartTypeEnum.NOTE,     noteState);
         rules.put(noteState, QuestionPartTypeEnum.CONTENT,  contentState);
+        rules.put(noteState, QuestionPartTypeEnum.OTHER,    noteState);
     }
 
     public StateMachine(StateMachineContext context){

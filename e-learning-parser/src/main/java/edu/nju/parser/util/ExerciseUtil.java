@@ -14,7 +14,7 @@ public class ExerciseUtil {
         if (isAppend(paragraph)) return QuestionPartTypeEnum.APPEND;
         if (isAnswer(paragraph)) return QuestionPartTypeEnum.ANSWER;
         if (isNote(paragraph)) return QuestionPartTypeEnum.NOTE;
-        return QuestionPartTypeEnum.CONTENT;
+        return QuestionPartTypeEnum.OTHER;
     }
 
     /**

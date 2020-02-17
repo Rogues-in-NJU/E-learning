@@ -8,7 +8,8 @@ public enum QuestionPartTypeEnum {
     CONTENT(1, "题干"),
     APPEND(2, "附加"),
     ANSWER(3, "答案"),
-    NOTE(4, "讲义");
+    NOTE(4, "讲义"),
+    OTHER(5, "其他");
 
     private int code;
     private String name;
