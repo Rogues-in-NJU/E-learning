@@ -1,14 +1,16 @@
 package edu.nju.parser.core;
 
 import edu.nju.parser.common.Paragraph;
+import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.List;
 
 public class DocxConverterTest {
 
     @Test
-    public void test() {
+    public void test() throws IOException, Docx4JException {
         String baseDir = DocxConverter.class.getResource("/").getPath();
         System.out.println(baseDir);
         DocxConverterConfig.DocxConverterConfigBuilder builder
