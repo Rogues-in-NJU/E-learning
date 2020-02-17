@@ -1,7 +1,6 @@
 package edu.nju.parser.statemachine;
 
 import edu.nju.parser.enums.QuestionPartTypeEnum;
-import edu.nju.parser.statemachine.state.StemState;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,8 +18,8 @@ public class StateMachineContext {
     public StateMachineContext(){
         previousObj = null;
         questionParts = new HashMap<>();
-        questionParts.put(QuestionPartTypeEnum.STEM, new StringBuilder());
-        questionParts.put(QuestionPartTypeEnum.OPTION, new StringBuilder());
+        questionParts.put(QuestionPartTypeEnum.CONTENT, new StringBuilder());
+        questionParts.put(QuestionPartTypeEnum.APPEND, new StringBuilder());
         questionParts.put(QuestionPartTypeEnum.ANSWER, new StringBuilder());
         questionParts.put(QuestionPartTypeEnum.NOTE, new StringBuilder());
         line = "";
@@ -33,14 +32,14 @@ public class StateMachineContext {
 
     public String generateQuestionContent(){
         //todo 题目各部分以怎么样的形式存储进 content里
-        String stem = questionParts.get(QuestionPartTypeEnum.STEM).toString();
-        String option = questionParts.get(QuestionPartTypeEnum.OPTION).toString();
+        String content = questionParts.get(QuestionPartTypeEnum.CONTENT).toString();
+        String append = questionParts.get(QuestionPartTypeEnum.APPEND).toString();
         String answer = questionParts.get(QuestionPartTypeEnum.ANSWER).toString();
         String note = questionParts.get(QuestionPartTypeEnum.NOTE).toString();
 
         String result = "new question ========== \n" +
-                "stem :" + stem + "\n" +
-                "option :" + option + "\n" +
+                "content :" + content + "\n" +
+                "append :" + append + "\n" +
                 "answer :" + answer + "\n" +
                 "note :" + note + "\n"
                 + "================================";
@@ -48,8 +47,8 @@ public class StateMachineContext {
     }
 
     public void clearQuestionMap(){
-        questionParts.put(QuestionPartTypeEnum.STEM, new StringBuilder());
-        questionParts.put(QuestionPartTypeEnum.OPTION, new StringBuilder());
+        questionParts.put(QuestionPartTypeEnum.CONTENT, new StringBuilder());
+        questionParts.put(QuestionPartTypeEnum.APPEND, new StringBuilder());
         questionParts.put(QuestionPartTypeEnum.ANSWER, new StringBuilder());
         questionParts.put(QuestionPartTypeEnum.NOTE, new StringBuilder());
     }

@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum QuestionPartTypeEnum {
 
-    STEM(1, "题干"),
-    OPTION(2, "选项"),
+    CONTENT(1, "题干"),
+    APPEND(2, "附加"),
     ANSWER(3, "答案"),
     NOTE(4, "讲义");
 
