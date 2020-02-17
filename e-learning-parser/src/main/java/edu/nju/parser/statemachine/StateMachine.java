@@ -39,6 +39,13 @@ public class StateMachine {
         rules.put(noteState, QuestionPartTypeEnum.NOTE,     noteState);
         rules.put(noteState, QuestionPartTypeEnum.CONTENT,  contentState);
         rules.put(noteState, QuestionPartTypeEnum.OTHER,    noteState);
+
+        //other
+        rules.put(otherState, QuestionPartTypeEnum.APPEND,   appendState);
+        rules.put(otherState, QuestionPartTypeEnum.ANSWER,   answerState);
+        rules.put(otherState, QuestionPartTypeEnum.NOTE,     noteState);
+        rules.put(otherState, QuestionPartTypeEnum.CONTENT,  contentState);
+        rules.put(otherState, QuestionPartTypeEnum.OTHER,    otherState);
     }
 
     public StateMachine(StateMachineContext context){

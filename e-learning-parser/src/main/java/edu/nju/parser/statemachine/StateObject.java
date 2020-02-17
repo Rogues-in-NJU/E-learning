@@ -28,4 +28,8 @@ public class StateObject {
     public void afterAction(StateMachineContext context){
         context.setPreviousObj(this);
     }
+
+    public QuestionPartTypeEnum getQuestionPart() {
+        return questionPart;
+    }
 }

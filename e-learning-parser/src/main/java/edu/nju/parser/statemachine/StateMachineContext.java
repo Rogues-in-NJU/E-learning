@@ -26,7 +26,7 @@ public class StateMachineContext {
     }
 
     public void addLineToMap(QuestionPartTypeEnum questionPartTypeEnum){
-        questionParts.get(questionPartTypeEnum).append(line);
+        questionParts.get(questionPartTypeEnum).append(line.getInnerText());
     }
 
     public String generateQuestionContent(){

@@ -29,7 +29,7 @@ public class DocxConverterTest {
             for (Paragraph p: paragraphs) {
                 // 解析出一行后 调用 正则判断 出类别
                 // 然后用状态机辅助判断
-                System.out.println(p.getInnerText());
+//                System.out.println(p.getInnerText());
                 context.setLine(p);
                 stateMachine.execute(ExerciseUtil.getParagraphType(p));
             }
