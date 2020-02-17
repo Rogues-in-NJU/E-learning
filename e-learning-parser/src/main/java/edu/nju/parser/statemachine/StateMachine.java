@@ -4,68 +4,49 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import edu.nju.parser.enums.QuestionPartTypeEnum;
 import edu.nju.parser.statemachine.state.AnswerState;
+import edu.nju.parser.statemachine.state.AppendState;
+import edu.nju.parser.statemachine.state.ContentState;
 import edu.nju.parser.statemachine.state.NoteState;
-import edu.nju.parser.statemachine.state.OptionState;
-import edu.nju.parser.statemachine.state.StemState;
-import edu.nju.parser.util.ParagraphType;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class StateMachine {
 
     // previous - event - next
     static Table<StateObject, QuestionPartTypeEnum, StateObject> rules = HashBasedTable.create();
 
-    static Map<ParagraphType, QuestionPartTypeEnum> eventMap = new HashMap<>();
-
-    static StemState    stemState       =     new StemState();
-    static OptionState  optionState     =   new OptionState();
+    static ContentState contentState    =   new ContentState();
+    static AppendState  appendState     =   new AppendState();
     static AnswerState  answerState     =   new AnswerState();
-    static NoteState    noteState       =     new NoteState();
+    static NoteState    noteState       =   new NoteState();
 
     StateMachineContext context;
 
     {
-        rules.put(stemState, QuestionPartTypeEnum.OPTION,   optionState);
-        rules.put(stemState, QuestionPartTypeEnum.ANSWER,   answerState);
-        rules.put(stemState, QuestionPartTypeEnum.NOTE,     noteState);
-        rules.put(stemState, QuestionPartTypeEnum.STEM,     stemState);
+        rules.put(contentState, QuestionPartTypeEnum.APPEND,   appendState);
+        rules.put(contentState, QuestionPartTypeEnum.ANSWER,   answerState);
+        rules.put(contentState, QuestionPartTypeEnum.NOTE,     noteState);
+        rules.put(contentState, QuestionPartTypeEnum.CONTENT,  contentState);
 
-        rules.put(optionState, QuestionPartTypeEnum.OPTION, optionState);
-        rules.put(optionState, QuestionPartTypeEnum.ANSWER, answerState);
-        rules.put(optionState, QuestionPartTypeEnum.NOTE,   noteState);
-        rules.put(optionState, QuestionPartTypeEnum.STEM,   stemState);
+        rules.put(appendState, QuestionPartTypeEnum.APPEND, appendState);
+        rules.put(appendState, QuestionPartTypeEnum.ANSWER, answerState);
+        rules.put(appendState, QuestionPartTypeEnum.NOTE,   noteState);
+        rules.put(appendState, QuestionPartTypeEnum.CONTENT,contentState);
 
-        rules.put(answerState, QuestionPartTypeEnum.STEM,   stemState);
+        rules.put(answerState, QuestionPartTypeEnum.CONTENT,contentState);
         rules.put(answerState, QuestionPartTypeEnum.NOTE,   noteState);
         rules.put(answerState, QuestionPartTypeEnum.ANSWER, answerState);
 
         rules.put(noteState, QuestionPartTypeEnum.NOTE,     noteState);
-        rules.put(noteState, QuestionPartTypeEnum.STEM,     stemState);
-    }
-
-    {
-        eventMap.put(ParagraphType.ChapterTitle, QuestionPartTypeEnum.STEM);
-        eventMap.put(ParagraphType.AnswerTitle, QuestionPartTypeEnum.ANSWER);
-        eventMap.put(ParagraphType.Content, QuestionPartTypeEnum.STEM);
-        eventMap.put(ParagraphType.SubContent, QuestionPartTypeEnum.STEM);
-        eventMap.put(ParagraphType.Append, QuestionPartTypeEnum.STEM);
-        eventMap.put(ParagraphType.Answer, QuestionPartTypeEnum.ANSWER);
-        eventMap.put(ParagraphType.Note, QuestionPartTypeEnum.NOTE);
-//        eventMap.put(ParagraphType.Other, QuestionPartTypeEnum.STEM);
-
+        rules.put(noteState, QuestionPartTypeEnum.CONTENT,  contentState);
     }
 
     public StateMachine(StateMachineContext context){
         this.context = context;
-        this.context.setPreviousObj(stemState);
+        this.context.setPreviousObj(contentState);
     }
 
-    public void execute(ParagraphType paragraphType){
+    public void execute(QuestionPartTypeEnum questionPartTypeEnum){
 
         StateObject previousState = context.getPreviousObj();
-        QuestionPartTypeEnum questionPartTypeEnum = eventMap.get(paragraphType);
         StateObject nextState = null;
         if(questionPartTypeEnum != null){
             nextState = rules.column(questionPartTypeEnum).get(previousState);

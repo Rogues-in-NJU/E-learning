@@ -4,10 +4,10 @@ import edu.nju.parser.enums.QuestionPartTypeEnum;
 import edu.nju.parser.statemachine.StateMachineContext;
 import edu.nju.parser.statemachine.StateObject;
 
-public class StemState extends StateObject {
+public class ContentState extends StateObject {
 
-    public StemState(){
-        super(QuestionPartTypeEnum.STEM);
+    public ContentState(){
+        super(QuestionPartTypeEnum.CONTENT);
     }
 
 
