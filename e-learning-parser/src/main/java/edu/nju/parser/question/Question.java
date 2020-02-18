@@ -71,4 +71,14 @@ public class Question {
     public void setLabels(String labels) {
         this.labels = labels;
     }
+
+    public void print(){
+        String result = "Question ======================== \n" +
+                "content :" + content + "\n" +
+                "append :" + append + "\n" +
+                "answer :" + answer + "\n" +
+                "note :" + note + "\n"
+                + "================================";
+        System.out.println(result);
+    }
 }

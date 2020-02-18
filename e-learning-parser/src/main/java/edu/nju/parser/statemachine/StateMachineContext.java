@@ -3,6 +3,7 @@ package edu.nju.parser.statemachine;
 import edu.nju.parser.common.Paragraph;
 import edu.nju.parser.enums.QuestionPartTypeEnum;
 import edu.nju.parser.enums.TitleTypeEnum;
+import edu.nju.parser.question.Question;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,6 +62,23 @@ public class StateMachineContext {
                 "note :" + note + "\n"
                 + "================================";
         return result;
+    }
+
+    //TODO 完整地存题目，目前只存了4个信息
+    public Question getQuestion(){
+
+        Question question = new Question();
+        String content = questionParts.get(QuestionPartTypeEnum.CONTENT).toString();
+        String append = questionParts.get(QuestionPartTypeEnum.APPEND).toString();
+        String answer = questionParts.get(QuestionPartTypeEnum.ANSWER).toString();
+        String note = questionParts.get(QuestionPartTypeEnum.NOTE).toString();
+
+        question.setContent(content);
+        question.setAppend(append);
+        question.setAnswer(answer);
+        question.setNote(note);
+
+        return question;
     }
 
     public void clearExamTitle(){
