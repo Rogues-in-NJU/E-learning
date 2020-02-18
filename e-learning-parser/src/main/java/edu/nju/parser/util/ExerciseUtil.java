@@ -116,4 +116,13 @@ public class ExerciseUtil {
 
         return Pattern.matches(pattern, paragraph);
     }
+
+    // public static boolean isMultiAnswer(String paragraph) {
+    //     List<String> patterns = new ArrayList<>();
+    //     patterns.add("([0-9]+[．、]{1}((?![0-9]+[．、]).)+){2,}");
+    //     String pattern = "^(" + StringUtils.join(patterns, "|") + ")$";
+    //
+    //     return Pattern.matches(pattern, paragraph);
+    // }
+
 }
