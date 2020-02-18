@@ -15,7 +15,7 @@ public class StateObject {
     };
 
     public void beforeAction(StateMachineContext context){
-        StateObject previousObj = context.getPreviousObj();
+//        StateObject previousObj = context.getPreviousObj();
 //        System.out.println("previous is ：" + previousObj.getName() +
 //                " ; now is : " + getName());
     }

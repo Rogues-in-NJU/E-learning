@@ -18,7 +18,12 @@ public class OtherState extends StateObject {
         if( previousObject instanceof OtherState){
             previousObject = ((OtherState) previousObject).getPreviousObject();
         }
-        context.addLineToMap(previousObject.getQuestionPart());
+
+        if (previousObject instanceof TitleState) {
+            context.addTitle(((TitleState) previousObject).getTitleType());
+        } else {
+            context.addLineToMap(previousObject.getQuestionPart());
+        }
     }
 
     @Override
