@@ -19,7 +19,9 @@ public class ContentState extends StateObject {
 
         //todo 存储题目
         String questionContent = context.generateQuestionContent();
-        System.out.println(questionContent);
+        if (questionContent != null) {
+            System.out.println(questionContent);
+        }
         context.clearQuestionMap();
 
         //可能是新的题干了

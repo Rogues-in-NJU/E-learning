@@ -2,6 +2,7 @@ package edu.nju.parser.statemachine;
 
 import edu.nju.parser.common.Paragraph;
 import edu.nju.parser.enums.QuestionPartTypeEnum;
+import edu.nju.parser.enums.TitleTypeEnum;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +10,9 @@ import java.util.Map;
 public class StateMachineContext {
 
     private StateObject previousObj;
+
+    //缓存标题以确定公共标签
+    private Map<TitleTypeEnum, StringBuilder> titles;
 
     //缓存题目以解析的部分
     private Map<QuestionPartTypeEnum, StringBuilder> questionParts;
@@ -18,11 +22,20 @@ public class StateMachineContext {
 
     public StateMachineContext(){
         previousObj = null;
+
         questionParts = new HashMap<>();
         questionParts.put(QuestionPartTypeEnum.CONTENT, new StringBuilder());
         questionParts.put(QuestionPartTypeEnum.APPEND, new StringBuilder());
         questionParts.put(QuestionPartTypeEnum.ANSWER, new StringBuilder());
         questionParts.put(QuestionPartTypeEnum.NOTE, new StringBuilder());
+
+        titles = new HashMap<>();
+        titles.put(TitleTypeEnum.EXAM, new StringBuilder());
+        titles.put(TitleTypeEnum.CHAPTER, new StringBuilder());
+    }
+
+    public void addTitle(TitleTypeEnum titleTypeEnum){
+        titles.get(titleTypeEnum).append(line.getInnerText());
     }
 
     public void addLineToMap(QuestionPartTypeEnum questionPartTypeEnum){
@@ -36,6 +49,11 @@ public class StateMachineContext {
         String answer = questionParts.get(QuestionPartTypeEnum.ANSWER).toString();
         String note = questionParts.get(QuestionPartTypeEnum.NOTE).toString();
 
+        // 之后生成对象时可以有专门的方法判断是否为空
+        if (content.isEmpty() && append.isEmpty() && answer.isEmpty() && note.isEmpty()) {
+            return null;
+        }
+
         String result = "new question ========== \n" +
                 "content :" + content + "\n" +
                 "append :" + append + "\n" +
@@ -43,6 +61,14 @@ public class StateMachineContext {
                 "note :" + note + "\n"
                 + "================================";
         return result;
+    }
+
+    public void clearExamTitle(){
+        titles.put(TitleTypeEnum.EXAM, new StringBuilder());
+    }
+
+    public void clearChapterTitle(){
+        titles.put(TitleTypeEnum.CHAPTER, new StringBuilder());
     }
 
     public void clearQuestionMap(){
@@ -74,5 +100,9 @@ public class StateMachineContext {
 
     public void setQuestionParts(Map<QuestionPartTypeEnum, StringBuilder> questionParts) {
         this.questionParts = questionParts;
+    }
+
+    public Map<TitleTypeEnum, StringBuilder> getTitles() {
+        return titles;
     }
 }

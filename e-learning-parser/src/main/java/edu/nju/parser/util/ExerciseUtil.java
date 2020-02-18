@@ -2,6 +2,7 @@ package edu.nju.parser.util;
 
 import edu.nju.parser.common.Paragraph;
 import edu.nju.parser.enums.QuestionPartTypeEnum;
+import edu.nju.parser.enums.TitleTypeEnum;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -10,13 +11,26 @@ import java.util.regex.Pattern;
 
 public class ExerciseUtil {
 
+    public static void main(String[] args) {
+        System.out.println(ExerciseUtil.isAnswerTitle("【答案】"));
+    }
+
     public static QuestionPartTypeEnum getParagraphType(Paragraph paragraph) {
         String line = paragraph.getInnerText();
         if (isContent(line)) return QuestionPartTypeEnum.CONTENT;
         if (isAppend(line)) return QuestionPartTypeEnum.APPEND;
         if (isAnswer(line)) return QuestionPartTypeEnum.ANSWER;
         if (isNote(line)) return QuestionPartTypeEnum.NOTE;
+        if (isChapterTitle(line)) return QuestionPartTypeEnum.TITLE;
+        if (isAnswerTitle(line)) return QuestionPartTypeEnum.TITLE;
         return QuestionPartTypeEnum.OTHER;
+    }
+
+    public static TitleTypeEnum getTitleType(Paragraph paragraph) {
+        String line = paragraph.getInnerText();
+        if (isChapterTitle(line)) return TitleTypeEnum.CHAPTER;
+        if (isAnswerTitle(line)) return TitleTypeEnum.CHAPTER;
+        return TitleTypeEnum.EXAM;
     }
 
     /**
@@ -34,12 +48,14 @@ public class ExerciseUtil {
 
     /**
      * 是否为答案标题，其后内容统一为答案
+     * 将answer放在answerTitle之前，可以排除一些情况
      * @param paragraph
      * @return
      */
     public static boolean isAnswerTitle(String paragraph) {
         List<String> patterns = new ArrayList<String>();
-        patterns.add("\\s*参考答案\\s*");
+        patterns.add(".*参\\s*考\\s*答\\s*案.*");
+        patterns.add(".*试\\s*题\\s*解\\s*析.*");
         String pattern = "^(" + StringUtils.join(patterns, "|") + ")$";
 
         return Pattern.matches(pattern, paragraph);
@@ -53,8 +69,8 @@ public class ExerciseUtil {
     public static boolean isContent(String paragraph) {
         List<String> patterns = new ArrayList<String>();
         patterns.add("\\s*\\d+\\s*[．\\.、]+(.|\\s)*");
-        patterns.add("\\s*附加题\\s*[．\\.、：:]*(.|\\s)*");
-        patterns.add("\\s*[【\\[（\\(]\\s*附加题\\s*[】\\]）\\)](.|\\s)*");
+        patterns.add("\\s*附\\s*加\\s*题\\s*[．\\.、：:]*(.|\\s)*");
+        patterns.add("\\s*[【\\[（\\(]\\s*附\\s*加\\s*题\\s*[】\\]）\\)](.|\\s)*");
         String pattern = "^(" + StringUtils.join(patterns, "|") + ")$";
 
         return Pattern.matches(pattern, paragraph);
@@ -111,7 +127,7 @@ public class ExerciseUtil {
      */
     public static boolean isNote(String paragraph) {
         List<String> patterns = new ArrayList<String>();
-        patterns.add("(\\s*[【\\[（\\(]?\\s*((分析)|(点评))\\s*[】\\]）\\)]?(.|\\s)*)");
+        patterns.add("(\\s*[【\\[（\\(]?\\s*((分\\s*析)|(点\\s*评)|(评\\s*价))\\s*[】\\]）\\)]?(.|\\s)*)");
         String pattern = "^(" + StringUtils.join(patterns, "|") + ")$";
 
         return Pattern.matches(pattern, paragraph);
