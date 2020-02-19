@@ -27,7 +27,7 @@ public class TitleState extends StateObject {
     public void execute(StateMachineContext context){
 
         //todo 存储题目
-        String questionContent = context.generateQuestionContent();
+        String questionContent = context.getQuestion().questionToString();
         if (questionContent != null) {
             System.out.println(questionContent);
         }

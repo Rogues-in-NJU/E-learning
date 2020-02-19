@@ -51,32 +51,6 @@ public class StateMachineContext {
         questionParts.get(questionPartTypeEnum).append(line.getInnerText());
     }
 
-    public String generateQuestionContent(){
-        //todo 题目各部分以怎么样的形式存储进 content里
-        String content = questionParts.get(QuestionPartTypeEnum.CONTENT).toString();
-        String append = questionParts.get(QuestionPartTypeEnum.APPEND).toString();
-        String answer = questionParts.get(QuestionPartTypeEnum.ANSWER).toString();
-        String note = questionParts.get(QuestionPartTypeEnum.NOTE).toString();
-
-        // 之后生成对象时可以有专门的方法判断是否为空
-        if (content.isEmpty() && append.isEmpty() && answer.isEmpty() && note.isEmpty()) {
-            return null;
-        }
-
-        Set<String> realTags = new HashSet<>();
-        realTags.addAll(tags.getTags(content));
-        realTags.addAll(tags.getTags(note));
-
-        String result = "new question ========== \n" +
-                "content :" + content + "\n" +
-                "append :" + append + "\n" +
-                "answer :" + answer + "\n" +
-                "note :" + note + "\n" +
-                "tags : " + StringUtils.join(realTags, " | ") + "\n"
-                + "================================";
-        return result;
-    }
-
     //TODO 完整地存题目，目前只存了4个信息
     public Question getQuestion(){
 

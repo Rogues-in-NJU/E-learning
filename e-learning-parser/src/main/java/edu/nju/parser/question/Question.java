@@ -20,6 +20,8 @@ public class Question {
 
     private String labels;
 
+    private Integer parentId;
+
     public Integer getId() {
         return id;
     }
@@ -93,13 +95,25 @@ public class Question {
         this.labels = labels;
     }
 
-    public void print(){
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
+    }
+
+    public String questionToString() {
         String result = "Question ======================== \n" +
+                "id :" + id + "\n" +
+                "type :" + type + "\n" +
                 "content :" + content + "\n" +
                 "append :" + append + "\n" +
                 "answer :" + answer + "\n" +
-                "note :" + note + "\n"
+                "note :" + note + "\n" +
+                "labels :" + labels + "\n" +
+                "parentId :" + parentId + "\n"
                 + "================================";
-        System.out.println(result);
+        return result;
     }
 }
