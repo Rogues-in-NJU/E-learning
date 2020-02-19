@@ -1,7 +1,4 @@
 # Created by .ignore support plugin (hsz.mobi)
-
-!jieba-analysis-1.0.3.jar
-
 ### Java template
 # Compiled class file
 
@@ -241,3 +238,4 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 
 ~$*.docx
+!/e-learning-parser/lib/jieba-analysis-1.0.3.jar
