@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ExerciseUtil {
@@ -140,5 +141,18 @@ public class ExerciseUtil {
     //
     //     return Pattern.matches(pattern, paragraph);
     // }
+
+    public static String findSections(String content) {
+        List<String> patterns = new ArrayList<String>();
+        patterns.add("([一二三四五六七八九十]+[．\\.、]{1}){0,1}[0-9]+[．\\.、]{1}");
+        String pattern = "^(" + StringUtils.join(patterns, "|") + ")";
+
+        Matcher matcher = Pattern.compile(pattern).matcher(content);
+        if (!matcher.find()) {
+            return null;
+        } else {
+            return matcher.group();
+        }
+    }
 
 }

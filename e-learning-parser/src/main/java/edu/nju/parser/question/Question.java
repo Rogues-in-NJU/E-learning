@@ -6,6 +6,10 @@ public class Question {
 
     private Integer type;
 
+    private String section;
+
+    private String subSection;
+
     private String content;
 
     private String append;
@@ -32,6 +36,23 @@ public class Question {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+
+    public String getSection() {
+        return section;
+    }
+
+    public void setSection(String section) {
+        this.section = section;
+    }
+
+    public String getSubSection() {
+        return subSection;
+    }
+
+    public void setSubSection(String subSection) {
+        this.subSection = subSection;
     }
 
     public String getContent() {

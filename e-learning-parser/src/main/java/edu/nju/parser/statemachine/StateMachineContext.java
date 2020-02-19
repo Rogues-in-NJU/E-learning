@@ -4,9 +4,12 @@ import edu.nju.parser.common.Paragraph;
 import edu.nju.parser.enums.QuestionPartTypeEnum;
 import edu.nju.parser.enums.TitleTypeEnum;
 import edu.nju.parser.question.Question;
+import edu.nju.parser.util.ExerciseUtil;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.regex.Pattern;
 
 public class StateMachineContext {
 
@@ -72,6 +75,19 @@ public class StateMachineContext {
         String append = questionParts.get(QuestionPartTypeEnum.APPEND).toString();
         String answer = questionParts.get(QuestionPartTypeEnum.ANSWER).toString();
         String note = questionParts.get(QuestionPartTypeEnum.NOTE).toString();
+
+        // 编号
+        String sections = ExerciseUtil.findSections(content);
+        if (Objects.nonNull(sections)) {
+            sections = sections.trim().replaceAll("[．.、]", " ");
+            String[] splits = sections.split(" ");
+            if (splits.length >= 2) {
+                question.setSection(splits[0].trim());
+                question.setSubSection(splits[1].trim());
+            } else {
+                question.setSubSection(splits[0]);
+            }
+        }
 
         question.setContent(content);
         question.setAppend(append);
