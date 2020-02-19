@@ -1,4 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
+
+!jieba-analysis-1.0.3.jar
+
 ### Java template
 # Compiled class file
 
@@ -45,7 +48,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+#lib/
 lib64/
 parts/
 sdist/
