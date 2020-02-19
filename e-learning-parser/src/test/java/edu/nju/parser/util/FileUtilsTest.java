@@ -11,7 +11,7 @@ public class FileUtilsTest {
         List<String> files = FileUtil.getAllFileName("./");
         files.forEach(f -> {
             System.out.println(f);
-            System.out.println(TagUtil.extract(f).toString());
+            System.out.println(WordSplitUtil.extract(f).toString());
         });
 
 

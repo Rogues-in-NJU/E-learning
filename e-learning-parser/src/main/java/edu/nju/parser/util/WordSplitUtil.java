@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  *
  * 字符串分词
  * */
-public class TagUtil {
+public class WordSplitUtil {
 
     /**
      * 获取段落文字分词

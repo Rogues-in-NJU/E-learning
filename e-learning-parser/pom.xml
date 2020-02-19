@@ -63,7 +63,9 @@
         <dependency>
             <groupId>com.huaban</groupId>
             <artifactId>jieba-analysis</artifactId>
-            <version>1.0.2</version>
+            <systemPath>${project.basedir}/lib/jieba-analysis-1.0.3.jar</systemPath>
+            <version>1.0.3</version>
+            <scope>system</scope>
         </dependency>
     </dependencies>
 

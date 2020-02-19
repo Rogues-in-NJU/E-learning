@@ -1,15 +1,15 @@
 package edu.nju.parser.statemachine;
 
 import edu.nju.parser.common.Paragraph;
+import edu.nju.parser.core.MathTag;
+import edu.nju.parser.core.Tags;
 import edu.nju.parser.enums.QuestionPartTypeEnum;
 import edu.nju.parser.enums.TitleTypeEnum;
 import edu.nju.parser.question.Question;
 import edu.nju.parser.util.ExerciseUtil;
+import org.apache.commons.lang3.StringUtils;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.regex.Pattern;
+import java.util.*;
 
 public class StateMachineContext {
 
@@ -24,6 +24,8 @@ public class StateMachineContext {
     //当前处理的一行
     private Paragraph line;
 
+    private Tags tags;
+
     public StateMachineContext(){
         previousObj = null;
 
@@ -36,6 +38,9 @@ public class StateMachineContext {
         titles = new HashMap<>();
         titles.put(TitleTypeEnum.EXAM, new StringBuilder());
         titles.put(TitleTypeEnum.CHAPTER, new StringBuilder());
+
+        tags = new Tags();
+        tags.addTagAnalyzer(new MathTag());
     }
 
     public void addTitle(TitleTypeEnum titleTypeEnum){
@@ -58,11 +63,16 @@ public class StateMachineContext {
             return null;
         }
 
+        Set<String> realTags = new HashSet<>();
+        realTags.addAll(tags.getTags(content));
+        realTags.addAll(tags.getTags(note));
+
         String result = "new question ========== \n" +
                 "content :" + content + "\n" +
                 "append :" + append + "\n" +
                 "answer :" + answer + "\n" +
-                "note :" + note + "\n"
+                "note :" + note + "\n" +
+                "tags : " + StringUtils.join(realTags, " | ") + "\n"
                 + "================================";
         return result;
     }
@@ -75,6 +85,10 @@ public class StateMachineContext {
         String append = questionParts.get(QuestionPartTypeEnum.APPEND).toString();
         String answer = questionParts.get(QuestionPartTypeEnum.ANSWER).toString();
         String note = questionParts.get(QuestionPartTypeEnum.NOTE).toString();
+
+        Set<String> realTags = new HashSet<>();
+        realTags.addAll(tags.getTags(content));
+        realTags.addAll(tags.getTags(note));
 
         // 编号
         String sections = ExerciseUtil.findSections(content);
