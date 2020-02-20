@@ -1,13 +1,14 @@
 package edu.nju.parser.statemachine;
 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import edu.nju.parser.common.Paragraph;
 import edu.nju.parser.core.MathTag;
 import edu.nju.parser.core.Tags;
 import edu.nju.parser.enums.QuestionPartTypeEnum;
 import edu.nju.parser.enums.TitleTypeEnum;
 import edu.nju.parser.question.Question;
-import edu.nju.parser.util.ExerciseUtil;
-import org.apache.commons.lang3.StringUtils;
+import edu.nju.parser.util.QuestionUtil;
 
 import java.util.*;
 
@@ -20,6 +21,9 @@ public class StateMachineContext {
 
     //缓存题目以解析的部分
     private Map<QuestionPartTypeEnum, StringBuilder> questionParts;
+
+    //缓存已有题目
+    private Table<String, String, Question> questions = HashBasedTable.create();
 
     //当前处理的一行
     private Paragraph line;
@@ -65,7 +69,7 @@ public class StateMachineContext {
         realTags.addAll(tags.getTags(note));
 
         // 编号
-        String sections = ExerciseUtil.findSections(content);
+        String sections = QuestionUtil.findSections(content);
         if (Objects.nonNull(sections)) {
             sections = sections.trim().replaceAll("[．.、]", " ");
             String[] splits = sections.split(" ");
@@ -126,5 +130,24 @@ public class StateMachineContext {
 
     public Map<TitleTypeEnum, StringBuilder> getTitles() {
         return titles;
+    }
+
+    public void cacheQuestion(){
+        Question question = getQuestion();
+        if (question.isEmpty()) {
+            return;
+        }
+
+        Question oldQuestion = questions.get(question.getSection(), question.getSubSection());
+        if (oldQuestion != null) {
+            oldQuestion.update(question);
+            questions.put(oldQuestion.getSection(), oldQuestion.getSubSection(), oldQuestion);
+        } else {
+            questions.put(question.getSection(), question.getSubSection(), question);
+        }
+    }
+
+    public Collection<Question> getQuestions(){
+        return questions.values();
     }
 }

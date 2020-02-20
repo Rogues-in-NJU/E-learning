@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ExerciseUtil {
+public class QuestionUtil {
 
     public static void main(String[] args) {
-        System.out.println(ExerciseUtil.isAnswerTitle("【答案】"));
+        System.out.println(QuestionUtil.isAnswerTitle("【答案】"));
     }
 
     public static QuestionPartTypeEnum getParagraphType(Paragraph paragraph) {

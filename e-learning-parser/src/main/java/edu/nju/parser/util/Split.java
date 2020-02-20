@@ -55,7 +55,7 @@ public class Split {
                 String line = l.getContent();
                 System.out.println(line);
 //                context.setLine(line);
-//                stateMachine.execute(ExerciseUtil.getParagraphType(line));
+//                stateMachine.execute(QuestionUtil.getParagraphType(line));
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
