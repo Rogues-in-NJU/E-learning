@@ -1,6 +1,7 @@
 package edu.nju.parser.statemachine;
 
 import edu.nju.parser.common.Paragraph;
+import edu.nju.parser.core.CommonTag;
 import edu.nju.parser.core.MathTag;
 import edu.nju.parser.core.Tags;
 import edu.nju.parser.enums.QuestionPartTypeEnum;
@@ -41,6 +42,7 @@ public class StateMachineContext {
 
         tags = new Tags();
         tags.addTagAnalyzer(new MathTag());
+        tags.addTagAnalyzer(new CommonTag());
     }
 
     public void addTitle(TitleTypeEnum titleTypeEnum){

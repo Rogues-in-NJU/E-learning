@@ -4,40 +4,45 @@ import edu.nju.parser.common.Paragraph;
 import edu.nju.parser.statemachine.StateMachine;
 import edu.nju.parser.statemachine.StateMachineContext;
 import edu.nju.parser.util.ExerciseUtil;
-import edu.nju.parser.util.Split;
+import edu.nju.parser.util.FileUtil;
 import org.jsoup.Jsoup;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.List;
 
 public class DocxConverterTest {
 
     @Test
     public void test() {
-        StateMachineContext context = new StateMachineContext();
-        StateMachine stateMachine = new StateMachine(context);
-
         String baseDir = DocxConverter.class.getResource("/").getPath();
         System.out.println(baseDir);
         // Document document = converter.convert2Html();
 
-        try {
-            DocxConverterConfig.DocxConverterConfigBuilder builder
-                    = DocxConverterConfig.builder(baseDir + "/demo.docx", baseDir + "/html");
-            DocxConverter converter = new DocxConverter(builder.build());
-            List<Paragraph> paragraphs = converter.convert2Paragraphs();
+        File dir = new File(baseDir);
+        List<File> files = FileUtil.getAllFile(dir, ".docx");
 
-            for (Paragraph p: paragraphs) {
-                // 解析出一行后 调用 正则判断 出类别
-                // 然后用状态机辅助判断
+        for (File f: files) {
+            StateMachineContext context = new StateMachineContext();
+            StateMachine stateMachine = new StateMachine(context);
+            try {
+                DocxConverterConfig.DocxConverterConfigBuilder builder
+                        = DocxConverterConfig.builder(f.getCanonicalPath(), baseDir + "/html");
+                DocxConverter converter = new DocxConverter(builder.build());
+                List<Paragraph> paragraphs = converter.convert2Paragraphs();
+
+                for (Paragraph p: paragraphs) {
+                    // 解析出一行后 调用 正则判断 出类别
+                    // 然后用状态机辅助判断
 //                System.out.println(p.getInnerText());
-                context.setLine(p);
-                stateMachine.execute(ExerciseUtil.getParagraphType(p));
+                    context.setLine(p);
+                    stateMachine.execute(ExerciseUtil.getParagraphType(p));
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            } finally {
+                stateMachine.close();
             }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        } finally {
-            stateMachine.close();
         }
     }
 
