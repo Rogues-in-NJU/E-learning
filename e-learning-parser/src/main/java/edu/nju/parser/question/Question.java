@@ -1,14 +1,19 @@
 package edu.nju.parser.question;
 
+import com.alibaba.fastjson.JSON;
+
+import java.util.LinkedList;
+import java.util.List;
+
 public class Question {
 
     private Integer id;
 
     private Integer type;
 
-    private String section;
+    private String section = "";
 
-    private String subSection;
+    private String subSection = "";
 
     private String content;
 
@@ -18,7 +23,7 @@ public class Question {
 
     private String note;
 
-    private String labels;
+    private List<String> labels = new LinkedList<>();
 
     private Integer parentId;
 
@@ -44,7 +49,9 @@ public class Question {
     }
 
     public void setSection(String section) {
-        this.section = section;
+        if (this.section == null || this.section.isEmpty()) {
+            this.section = section;
+        }
     }
 
     public String getSubSection() {
@@ -52,7 +59,9 @@ public class Question {
     }
 
     public void setSubSection(String subSection) {
-        this.subSection = subSection;
+        if (this.subSection == null || this.subSection.isEmpty()) {
+            this.subSection = subSection;
+        }
     }
 
     public String getContent() {
@@ -60,7 +69,9 @@ public class Question {
     }
 
     public void setContent(String content) {
-        this.content = content;
+        if (this.content == null || this.content.isEmpty()) {
+            this.content = content;
+        }
     }
 
     public String getAppend() {
@@ -68,7 +79,9 @@ public class Question {
     }
 
     public void setAppend(String append) {
-        this.append = append;
+        if (this.append == null || this.append.isEmpty()) {
+            this.append = append;
+        }
     }
 
     public String getAnswer() {
@@ -76,7 +89,9 @@ public class Question {
     }
 
     public void setAnswer(String answer) {
-        this.answer = answer;
+        if (this.answer == null || this.answer.isEmpty()) {
+            this.answer = answer;
+        }
     }
 
     public String getNote() {
@@ -84,15 +99,18 @@ public class Question {
     }
 
     public void setNote(String note) {
-        this.note = note;
+        if (this.note == null || this.note.isEmpty()) {
+            this.note = note;
+        }
     }
 
-    public String getLabels() {
+    public List<String> getLabels() {
         return labels;
     }
 
-    public void setLabels(String labels) {
-        this.labels = labels;
+    public void addLabels(List<String> labels){
+        //TODO 添加时去重
+        this.labels.addAll(labels);
     }
 
     public Integer getParentId() {
@@ -107,13 +125,33 @@ public class Question {
         String result = "Question ======================== \n" +
                 "id :" + id + "\n" +
                 "type :" + type + "\n" +
+                "section :" + section + "\n" +
+                "subSection :" + subSection + "\n" +
                 "content :" + content + "\n" +
                 "append :" + append + "\n" +
                 "answer :" + answer + "\n" +
                 "note :" + note + "\n" +
-                "labels :" + labels + "\n" +
+                "labels :" + JSON.toJSONString(labels) + "\n" +
                 "parentId :" + parentId + "\n"
                 + "================================";
         return result;
+    }
+
+    public boolean isEmpty(){
+        return (content == null || content.isEmpty()) &&
+                (append == null || append.isEmpty()) &&
+                (answer == null || answer.isEmpty()) &&
+                (note == null || note.isEmpty()) &&
+                (labels == null || labels.isEmpty());
+    }
+
+    public void update(Question question){
+        this.section = question.getSection();
+        this.subSection = question.getSubSection();
+        this.content = question.getContent();
+        this.append = question.getAppend();
+        this.answer = question.getAnswer();
+        this.note = question.getNote();
+        addLabels(question.getLabels());
     }
 }

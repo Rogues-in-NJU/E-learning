@@ -1,13 +1,14 @@
 package edu.nju.parser.core;
 
 import edu.nju.parser.common.Paragraph;
+import edu.nju.parser.question.Question;
 import edu.nju.parser.statemachine.StateMachine;
 import edu.nju.parser.statemachine.StateMachineContext;
-import edu.nju.parser.util.ExerciseUtil;
-import edu.nju.parser.util.Split;
+import edu.nju.parser.util.QuestionUtil;
 import org.jsoup.Jsoup;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
 import java.util.List;
 
 public class DocxConverterTest {
@@ -18,7 +19,6 @@ public class DocxConverterTest {
         StateMachine stateMachine = new StateMachine(context);
 
         String baseDir = DocxConverter.class.getResource("/").getPath();
-        System.out.println(baseDir);
         // Document document = converter.convert2Html();
 
         try {
@@ -32,12 +32,17 @@ public class DocxConverterTest {
                 // 然后用状态机辅助判断
 //                System.out.println(p.getInnerText());
                 context.setLine(p);
-                stateMachine.execute(ExerciseUtil.getParagraphType(p));
+                stateMachine.execute(QuestionUtil.getParagraphType(p));
+            }
+
+            stateMachine.close();
+
+            Collection<Question> questions = context.getQuestions();
+            for (Question q: questions) {
+                System.out.println(q.questionToString());
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        } finally {
-            stateMachine.close();
         }
     }
 

@@ -89,7 +89,7 @@ public class StateMachine {
     public void close(){
         context.clearExamTitle();
         context.clearChapterTitle();
-        System.out.println(context.getQuestion().questionToString());
+        context.cacheQuestion();
         context.clearQuestionMap();
     }
 }
