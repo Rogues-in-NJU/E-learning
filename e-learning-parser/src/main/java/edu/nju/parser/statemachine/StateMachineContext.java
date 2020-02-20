@@ -10,6 +10,7 @@ import edu.nju.parser.enums.QuestionPartTypeEnum;
 import edu.nju.parser.enums.TitleTypeEnum;
 import edu.nju.parser.question.Question;
 import edu.nju.parser.util.QuestionUtil;
+import org.jsoup.Jsoup;
 
 import java.util.*;
 
@@ -66,12 +67,15 @@ public class StateMachineContext {
         String answer = questionParts.get(QuestionPartTypeEnum.ANSWER).toString();
         String note = questionParts.get(QuestionPartTypeEnum.NOTE).toString();
 
+        String plainTextContent = Jsoup.parse(content).text();
+        String plainTextNote = Jsoup.parse(note).text();
+
         Set<String> realTags = new HashSet<>();
-        realTags.addAll(tags.getTags(content));
-        realTags.addAll(tags.getTags(note));
+        realTags.addAll(tags.getTags(plainTextContent));
+        realTags.addAll(tags.getTags(plainTextNote));
 
         // 编号
-        String sections = QuestionUtil.findSections(content);
+        String sections = QuestionUtil.findSections(plainTextContent);
         if (Objects.nonNull(sections)) {
             sections = sections.trim().replaceAll("[．.、]", " ");
             String[] splits = sections.split(" ");
