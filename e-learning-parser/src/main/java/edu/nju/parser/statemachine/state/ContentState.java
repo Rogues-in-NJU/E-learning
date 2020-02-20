@@ -24,10 +24,7 @@ public class ContentState extends StateObject {
     public void execute(StateMachineContext context){
 
         //todo 存储题目
-        String questionContent = context.getQuestion().questionToString();
-        if (questionContent != null) {
-            System.out.println(questionContent);
-        }
+        context.cacheQuestion();
         context.clearQuestionMap();
 
         //可能是新的题干了

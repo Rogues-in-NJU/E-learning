@@ -4,8 +4,7 @@ import edu.nju.parser.enums.QuestionPartTypeEnum;
 import edu.nju.parser.enums.TitleTypeEnum;
 import edu.nju.parser.statemachine.StateMachineContext;
 import edu.nju.parser.statemachine.StateObject;
-import edu.nju.parser.util.Exercise;
-import edu.nju.parser.util.ExerciseUtil;
+import edu.nju.parser.util.QuestionUtil;
 
 import java.util.Map;
 
@@ -20,17 +19,14 @@ public class TitleState extends StateObject {
 
     @Override
     public void beforeAction(StateMachineContext context) {
-        this.titleType = ExerciseUtil.getTitleType(context.getLine());
+        this.titleType = QuestionUtil.getTitleType(context.getLine());
     }
 
     @Override
     public void execute(StateMachineContext context){
 
         //todo 存储题目
-        String questionContent = context.getQuestion().questionToString();
-        if (questionContent != null) {
-            System.out.println(questionContent);
-        }
+        context.cacheQuestion();
         context.clearQuestionMap();
 
         //todo 根据标题提取公共标签
@@ -41,7 +37,7 @@ public class TitleState extends StateObject {
         System.out.println();
         context.clearChapterTitle();
 
-        context.addTitle(ExerciseUtil.getTitleType(context.getLine()));
+        context.addTitle(QuestionUtil.getTitleType(context.getLine()));
     }
 
     public TitleTypeEnum getTitleType() {

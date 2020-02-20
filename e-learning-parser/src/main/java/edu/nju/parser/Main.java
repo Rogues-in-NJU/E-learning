@@ -5,7 +5,7 @@ import edu.nju.parser.core.DocxConverter;
 import edu.nju.parser.core.DocxConverterConfig;
 import edu.nju.parser.statemachine.StateMachine;
 import edu.nju.parser.statemachine.StateMachineContext;
-import edu.nju.parser.util.ExerciseUtil;
+import edu.nju.parser.util.QuestionUtil;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class Main {
                 // 然后用状态机辅助判断
 //                System.out.println(p.getInnerText());
                 context.setLine(p);
-                stateMachine.execute(ExerciseUtil.getParagraphType(p));
+                stateMachine.execute(QuestionUtil.getParagraphType(p));
             }
             stateMachine.close();
         } catch (Exception e) {
