@@ -2,8 +2,8 @@ package edu.nju.parser.question;
 
 import com.alibaba.fastjson.JSON;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Question {
 
@@ -23,7 +23,7 @@ public class Question {
 
     private String note;
 
-    private List<String> labels = new LinkedList<>();
+    private Set<String> labels = new HashSet<>();
 
     private Integer parentId;
 
@@ -104,12 +104,11 @@ public class Question {
         }
     }
 
-    public List<String> getLabels() {
+    public Set<String> getLabels() {
         return labels;
     }
 
-    public void addLabels(List<String> labels){
-        //TODO 添加时去重
+    public void addLabels(Set<String> labels){
         this.labels.addAll(labels);
     }
 

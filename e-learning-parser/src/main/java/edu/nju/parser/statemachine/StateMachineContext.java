@@ -7,7 +7,7 @@ import edu.nju.parser.core.CommonTag;
 import edu.nju.parser.core.MathTag;
 import edu.nju.parser.core.Tags;
 import edu.nju.parser.enums.QuestionPartTypeEnum;
-import edu.nju.parser.enums.TitleTypeEnum;
+import edu.nju.parser.enums.LabelTypeEnum;
 import edu.nju.parser.question.Question;
 import edu.nju.parser.util.QuestionUtil;
 import org.jsoup.Jsoup;
@@ -19,7 +19,7 @@ public class StateMachineContext {
     private StateObject previousObj;
 
     //缓存标题以确定公共标签
-    private Map<TitleTypeEnum, StringBuilder> titles;
+    private Map<LabelTypeEnum, Set<String>> labels;
 
     //缓存题目以解析的部分
     private Map<QuestionPartTypeEnum, StringBuilder> questionParts;
@@ -41,17 +41,18 @@ public class StateMachineContext {
         questionParts.put(QuestionPartTypeEnum.ANSWER, new StringBuilder());
         questionParts.put(QuestionPartTypeEnum.NOTE, new StringBuilder());
 
-        titles = new HashMap<>();
-        titles.put(TitleTypeEnum.EXAM, new StringBuilder());
-        titles.put(TitleTypeEnum.CHAPTER, new StringBuilder());
+        labels = new HashMap<>();
+        labels.put(LabelTypeEnum.EXAM, new HashSet<>());
+        labels.put(LabelTypeEnum.CHAPTER, new HashSet<>());
 
         tags = new Tags();
         tags.addTagAnalyzer(new MathTag());
         tags.addTagAnalyzer(new CommonTag());
     }
 
-    public void addTitle(TitleTypeEnum titleTypeEnum){
-        titles.get(titleTypeEnum).append(line.getInnerText());
+    public void addLabels(LabelTypeEnum labelTypeEnum){
+        Set<String> realTags = new HashSet<>(tags.getTags(line.getInnerText()));
+        labels.get(labelTypeEnum).addAll(realTags);
     }
 
     public void addLineToMap(QuestionPartTypeEnum questionPartTypeEnum){
@@ -68,11 +69,15 @@ public class StateMachineContext {
         String note = questionParts.get(QuestionPartTypeEnum.NOTE).toString();
 
         String plainTextContent = Jsoup.parse(content).text();
+        String plainTextAppend = Jsoup.parse(append).text();
+        String plainTextAnswer = Jsoup.parse(answer).text();
         String plainTextNote = Jsoup.parse(note).text();
 
-        Set<String> realTags = new HashSet<>();
-        realTags.addAll(tags.getTags(plainTextContent));
-        realTags.addAll(tags.getTags(plainTextNote));
+        Set<String> realLabels = new HashSet<>();
+        realLabels.addAll(tags.getTags(plainTextContent));
+        realLabels.addAll(tags.getTags(plainTextAppend));
+        realLabels.addAll(tags.getTags(plainTextAnswer));
+        realLabels.addAll(tags.getTags(plainTextNote));
 
         // 编号
         String sections = QuestionUtil.findSections(plainTextContent);
@@ -91,16 +96,19 @@ public class StateMachineContext {
         question.setAppend(append);
         question.setAnswer(answer);
         question.setNote(note);
+        question.addLabels(labels.get(LabelTypeEnum.EXAM));
+        question.addLabels(labels.get(LabelTypeEnum.CHAPTER));
+        question.addLabels(realLabels);
 
         return question;
     }
 
-    public void clearExamTitle(){
-        titles.put(TitleTypeEnum.EXAM, new StringBuilder());
+    public void clearExamLabels(){
+        labels.put(LabelTypeEnum.EXAM, new HashSet<>());
     }
 
-    public void clearChapterTitle(){
-        titles.put(TitleTypeEnum.CHAPTER, new StringBuilder());
+    public void clearChapterLabels(){
+        labels.put(LabelTypeEnum.CHAPTER, new HashSet<>());
     }
 
     public void clearQuestionMap(){
@@ -134,8 +142,8 @@ public class StateMachineContext {
         this.questionParts = questionParts;
     }
 
-    public Map<TitleTypeEnum, StringBuilder> getTitles() {
-        return titles;
+    public Map<LabelTypeEnum, Set<String>> getLabels() {
+        return labels;
     }
 
     public void cacheQuestion(){

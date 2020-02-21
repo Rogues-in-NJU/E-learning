@@ -3,7 +3,7 @@ package edu.nju.parser.enums;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum TitleTypeEnum {
+public enum LabelTypeEnum {
 
     EXAM(1, "试卷标题"),
     CHAPTER(2, "章节标题");
@@ -11,8 +11,8 @@ public enum TitleTypeEnum {
     private int code;
     private String name;
 
-    public static TitleTypeEnum of(int code) {
-        for (TitleTypeEnum item : TitleTypeEnum.values()) {
+    public static LabelTypeEnum of(int code) {
+        for (LabelTypeEnum item : LabelTypeEnum.values()) {
             if (item.code == code) {
                 return item;
             }

@@ -20,7 +20,7 @@ public class OtherState extends StateObject {
         }
 
         if (previousObject instanceof TitleState) {
-            context.addTitle(((TitleState) previousObject).getTitleType());
+            context.addLabels(((TitleState) previousObject).getTitleType());
         } else {
             context.addLineToMap(previousObject.getQuestionPart());
         }
