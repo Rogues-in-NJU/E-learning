@@ -1,20 +1,21 @@
 package edu.nju.parser.statemachine.state;
 
 import edu.nju.parser.enums.QuestionPartTypeEnum;
-import edu.nju.parser.enums.TitleTypeEnum;
+import edu.nju.parser.enums.LabelTypeEnum;
 import edu.nju.parser.statemachine.StateMachineContext;
 import edu.nju.parser.statemachine.StateObject;
 import edu.nju.parser.util.QuestionUtil;
 
 import java.util.Map;
+import java.util.Set;
 
 public class TitleState extends StateObject {
 
-    private TitleTypeEnum titleType;
+    private LabelTypeEnum titleType;
 
     public TitleState(){
         super(QuestionPartTypeEnum.TITLE);
-        this.titleType = TitleTypeEnum.EXAM;
+        this.titleType = LabelTypeEnum.EXAM;
     }
 
     @Override
@@ -30,17 +31,12 @@ public class TitleState extends StateObject {
         context.clearQuestionMap();
 
         //todo 根据标题提取公共标签
-        Map<TitleTypeEnum, StringBuilder> titles = context.getTitles();
-        System.out.println();
-        System.out.println("exam:" + titles.get(TitleTypeEnum.EXAM));
-        System.out.println("chapter:" + titles.get(TitleTypeEnum.CHAPTER));
-        System.out.println();
-        context.clearChapterTitle();
+        context.clearChapterLabels();
 
-        context.addTitle(QuestionUtil.getTitleType(context.getLine()));
+        context.addLabels(QuestionUtil.getTitleType(context.getLine()));
     }
 
-    public TitleTypeEnum getTitleType() {
+    public LabelTypeEnum getTitleType() {
         return titleType;
     }
 }
