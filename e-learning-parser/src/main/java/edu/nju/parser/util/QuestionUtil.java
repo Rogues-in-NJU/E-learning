@@ -2,7 +2,7 @@ package edu.nju.parser.util;
 
 import edu.nju.parser.common.Paragraph;
 import edu.nju.parser.enums.QuestionPartTypeEnum;
-import edu.nju.parser.enums.TitleTypeEnum;
+import edu.nju.parser.enums.LabelTypeEnum;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -27,11 +27,11 @@ public class QuestionUtil {
         return QuestionPartTypeEnum.OTHER;
     }
 
-    public static TitleTypeEnum getTitleType(Paragraph paragraph) {
+    public static LabelTypeEnum getTitleType(Paragraph paragraph) {
         String line = paragraph.getInnerText();
-        if (isChapterTitle(line)) return TitleTypeEnum.CHAPTER;
-        if (isAnswerTitle(line)) return TitleTypeEnum.CHAPTER;
-        return TitleTypeEnum.EXAM;
+        if (isChapterTitle(line)) return LabelTypeEnum.CHAPTER;
+        if (isAnswerTitle(line)) return LabelTypeEnum.CHAPTER;
+        return LabelTypeEnum.EXAM;
     }
 
     /**

@@ -87,8 +87,8 @@ public class StateMachine {
     }
 
     public void close(){
-        context.clearExamTitle();
-        context.clearChapterTitle();
+        context.clearExamLabels();
+        context.clearChapterLabels();
         context.cacheQuestion();
         context.clearQuestionMap();
     }

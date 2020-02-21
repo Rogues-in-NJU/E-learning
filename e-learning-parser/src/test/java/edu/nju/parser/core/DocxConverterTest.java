@@ -37,13 +37,14 @@ public class DocxConverterTest {
 
         File dir = new File(baseDir);
         List<File> files = FileUtil.getAllFile(dir, ".docx");
+        Collection<Question> questions = null;
 
         for (File f: files) {
             StateMachineContext context = new StateMachineContext();
             StateMachine stateMachine = new StateMachine(context);
             try {
                 DocxConverterConfig.DocxConverterConfigBuilder builder
-                        = DocxConverterConfig.builder(f.getCanonicalPath(), baseDir + "/html");
+                        = DocxConverterConfig.builder(f.getCanonicalPath(), "");
                 DocxConverter converter = new DocxConverter(builder.build());
                 List<Paragraph> paragraphs = converter.convert2Paragraphs();
 
@@ -58,9 +59,10 @@ public class DocxConverterTest {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             } finally {
+                questions = context.getQuestions();
                 stateMachine.close();
             }
-            Collection<Question> questions = context.getQuestions();
+
             for (Question q : questions) {
                 System.out.println(q.questionToString());
             }
