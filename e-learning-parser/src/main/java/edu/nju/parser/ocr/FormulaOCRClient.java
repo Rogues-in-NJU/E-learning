@@ -24,7 +24,10 @@ public class FormulaOCRClient {
     private static BASE64Encoder encoder = new BASE64Encoder();
 
     public static void main(String[] args) throws IOException {
-        MathPixResult res = img2Latex("D:\\idea_workspace\\E-learning\\target\\media\\image2.jpeg");
+        MathPixResult res = img2Latex("/Users/hermc/Documents/Outsource/E-learning/e-learning-parser/target/test-classes/html/images/6bd7bd3b-6ac1-46f7-ae5e-189b663697cdimage2.jpeg");
+        System.out.println(res);
+
+        res = img2Latex("/Users/hermc/Documents/Outsource/E-learning/e-learning-parser/target/test-classes/html/images/6bd7bd3b-6ac1-46f7-ae5e-189b663697cdimage41.jpeg");
         System.out.println(res);
     }
 

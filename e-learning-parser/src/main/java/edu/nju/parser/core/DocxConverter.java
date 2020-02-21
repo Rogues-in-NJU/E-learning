@@ -93,7 +93,7 @@ public class DocxConverter {
         Docx4J.toHTML(htmlSettings, os, Docx4J.FLAG_EXPORT_PREFER_XSL);
     }
 
-    private void toInnerText(StringBuilder sb, Element e) {
+    public void convertImagesToLatex(Element e) {
 
     }
 
