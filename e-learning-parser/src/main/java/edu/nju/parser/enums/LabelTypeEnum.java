@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum LabelTypeEnum {
 
+    PATH(0, "文件路径"),
     EXAM(1, "试卷标题"),
     CHAPTER(2, "章节标题");
 

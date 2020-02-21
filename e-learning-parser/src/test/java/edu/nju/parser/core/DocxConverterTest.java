@@ -43,6 +43,8 @@ public class DocxConverterTest {
             StateMachineContext context = new StateMachineContext();
             StateMachine stateMachine = new StateMachine(context);
             try {
+                context.addPathLabels(f.getCanonicalPath());
+
                 DocxConverterConfig.DocxConverterConfigBuilder builder
                         = DocxConverterConfig.builder(f.getCanonicalPath(), "");
                 DocxConverter converter = new DocxConverter(builder.build());

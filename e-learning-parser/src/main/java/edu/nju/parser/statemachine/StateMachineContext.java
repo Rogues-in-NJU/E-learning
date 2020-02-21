@@ -55,6 +55,12 @@ public class StateMachineContext {
         labels.get(labelTypeEnum).addAll(realTags);
     }
 
+    public void addPathLabels(String filePath) {
+        if (Objects.nonNull(filePath)) {
+            labels.put(LabelTypeEnum.PATH, tags.getTags(filePath));
+        }
+    }
+
     public void addLineToMap(QuestionPartTypeEnum questionPartTypeEnum){
         questionParts.get(questionPartTypeEnum).append(line.getInnerText());
     }
