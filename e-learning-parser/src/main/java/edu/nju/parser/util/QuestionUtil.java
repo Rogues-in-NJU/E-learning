@@ -4,6 +4,7 @@ import edu.nju.parser.common.Paragraph;
 import edu.nju.parser.enums.QuestionPartTypeEnum;
 import edu.nju.parser.enums.LabelTypeEnum;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.regex.Pattern;
 public class QuestionUtil {
 
     public static void main(String[] args) {
-        System.out.println(QuestionUtil.isAnswerTitle("【答案】"));
+        System.out.println(QuestionUtil.isAnswer("解答和证明："));
     }
 
     public static QuestionPartTypeEnum getParagraphType(Paragraph paragraph) {
@@ -28,7 +29,7 @@ public class QuestionUtil {
     }
 
     public static LabelTypeEnum getTitleType(Paragraph paragraph) {
-        String line = paragraph.getInnerText();
+        String line = Jsoup.parse(paragraph.getInnerText()).text();
         if (isChapterTitle(line)) return LabelTypeEnum.CHAPTER;
         if (isAnswerTitle(line)) return LabelTypeEnum.CHAPTER;
         return LabelTypeEnum.EXAM;
@@ -69,9 +70,16 @@ public class QuestionUtil {
      */
     public static boolean isContent(String paragraph) {
         List<String> patterns = new ArrayList<String>();
+        patterns.add("\\s*[一二三四五六七八九十]\\s*[．\\.、]+\\s*\\d+\\s*[．\\.、]+(.|\\s)*");
         patterns.add("\\s*\\d+\\s*[．\\.、]+(.|\\s)*");
-        patterns.add("\\s*附\\s*加\\s*题\\s*[．\\.、：:]*(.|\\s)*");
-        patterns.add("\\s*[【\\[（\\(]\\s*附\\s*加\\s*题\\s*[】\\]）\\)](.|\\s)*");
+        patterns.add("\\s*附\\s*加\\s*题\\s*[0-9一二三四五六七八九十]?\\s*[．\\.、：:]*(.|\\s)*");
+        patterns.add("\\s*[【\\[（\\(]\\s*附\\s*加\\s*题\\s*[0-9一二三四五六七八九十]?\\s*[】\\]）\\)](.|\\s)*");
+        patterns.add("\\s*例\\s*[0-9一二三四五六七八九十题]?\\s*[．\\.、：:]*(.|\\s)*");
+        patterns.add("\\s*[【\\[（\\(]\\s*例\\s*[0-9一二三四五六七八九十题]?\\s*[】\\]）\\)](.|\\s)*");
+        patterns.add("\\s*变\\s*式\\s*与\\s*思\\s*考\\s*[．\\.、：:]*(.|\\s)*");
+        patterns.add("\\s*[【\\[（\\(]\\s*变\\s*式\\s*与\\s*思\\s*考\\s*[】\\]）\\)](.|\\s)*");
+        patterns.add("\\s*问\\s*题\\s*[0-9一二三四五六七八九十]?\\s*[．\\.、：:]*(.|\\s)*");
+        patterns.add("\\s*[【\\[（\\(]\\s*问\\s*题\\s*[0-9一二三四五六七八九十]?\\s*[】\\]）\\)](.|\\s)*");
         String pattern = "^(" + StringUtils.join(patterns, "|") + ")$";
 
         return Pattern.matches(pattern, paragraph);
@@ -114,8 +122,8 @@ public class QuestionUtil {
      */
     public static boolean isAnswer(String paragraph) {
         List<String> patterns = new ArrayList<String>();
-        patterns.add("(\\s*[解答析证明]+\\s*[：:](.|\\s)*)");
-        patterns.add("(\\s*[【\\[（\\(]\\s*[解答析证明]+\\s*[】\\]）\\)](.|\\s)*)");
+        patterns.add("(\\s*((解|答|(解\\s*答)|(答\\s*案)|(证\\s*明)|(略\\s*解))\\s*[与和]?)+\\s*[：:](.|\\s)*)");
+        patterns.add("(\\s*[【\\[（\\(]?\\s*((解|答|(解\\s*答)|(答\\s*案)|(证\\s*明)|(略\\s*解))\\s*[与和]?)+\\s*[】\\]）\\)]?(.|\\s)*)");
         String pattern = "^(" + StringUtils.join(patterns, "|") + ")$";
 
         return Pattern.matches(pattern, paragraph);
@@ -128,7 +136,8 @@ public class QuestionUtil {
      */
     public static boolean isNote(String paragraph) {
         List<String> patterns = new ArrayList<String>();
-        patterns.add("(\\s*[【\\[（\\(]?\\s*((分\\s*析)|(点\\s*评)|(评\\s*价))\\s*[】\\]）\\)]?(.|\\s)*)");
+        patterns.add("(\\s*(((结\\s*论)|(分\\s*析)|(点\\s*评)|(评\\s*价)|(评\\s*注)|(解\\s*析))\\s*[与和]?)+\\s*[：:](.|\\s)*)");
+        patterns.add("(\\s*[【\\[（\\(]?\\s*(((结\\s*论)|(分\\s*析)|(点\\s*评)|(评\\s*价)|(评\\s*注)|(解\\s*析))\\s*[与和]?)+\\s*[】\\]）\\)]?(.|\\s)*)");
         String pattern = "^(" + StringUtils.join(patterns, "|") + ")$";
 
         return Pattern.matches(pattern, paragraph);
@@ -142,9 +151,30 @@ public class QuestionUtil {
     //     return Pattern.matches(pattern, paragraph);
     // }
 
-    public static String findSections(String content) {
+    public static String findSection(String content) {
         List<String> patterns = new ArrayList<String>();
-        patterns.add("([一二三四五六七八九十]+[．\\.、]{1}){0,1}[0-9]+[．\\.、]{1}");
+        patterns.add("[一二三四五六七八九十]+[．\\.、]");
+        String pattern = "^(" + StringUtils.join(patterns, "|") + ")";
+
+        Matcher matcher = Pattern.compile(pattern).matcher(content);
+        if (!matcher.find()) {
+            return null;
+        } else {
+            return matcher.group();
+        }
+    }
+
+    public static String findSubSection(String content) {
+        List<String> patterns = new ArrayList<String>();
+        patterns.add("([一二三四五六七八九十]+[．\\.、]{1}){0,1}[0-9]+[．\\.、]");
+        patterns.add("\\s*附\\s*加\\s*题\\s*[0-9一二三四五六七八九十]?\\s*[．\\.、：:]");
+        patterns.add("\\s*[【\\[（\\(]\\s*附\\s*加\\s*题\\s*[0-9一二三四五六七八九十]?\\s*[】\\]）\\)]");
+        patterns.add("\\s*例\\s*[0-9一二三四五六七八九十题]?\\s*[．\\.、：:]");
+        patterns.add("\\s*[【\\[（\\(]\\s*例\\s*[0-9一二三四五六七八九十题]?\\s*[】\\]）\\)]");
+        patterns.add("\\s*变\\s*式\\s*与\\s*思\\s*考\\s*[．\\.、：:]");
+        patterns.add("\\s*[【\\[（\\(]\\s*变\\s*式\\s*与\\s*思\\s*考\\s*[】\\]）\\)]");
+        patterns.add("\\s*问\\s*题\\s*[0-9一二三四五六七八九十]?\\s*[．\\.、：:]");
+        patterns.add("\\s*[【\\[（\\(]\\s*问\\s*题\\s*[0-9一二三四五六七八九十]?\\s*[】\\]）\\)]");
         String pattern = "^(" + StringUtils.join(patterns, "|") + ")";
 
         Matcher matcher = Pattern.compile(pattern).matcher(content);
