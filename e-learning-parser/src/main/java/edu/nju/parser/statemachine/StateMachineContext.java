@@ -32,6 +32,9 @@ public class StateMachineContext {
 
     private Tags tags;
 
+    // 当前所处章节
+    private String section = "";
+
     public StateMachineContext(){
         previousObj = null;
 
@@ -80,22 +83,24 @@ public class StateMachineContext {
         realLabels.addAll(tags.getTags(plainTextNote));
 
         // 编号
-        String sections = QuestionUtil.findSections(plainTextContent);
-        if (Objects.nonNull(sections)) {
-            sections = sections.trim().replaceAll("[．.、]", " ");
-            String[] splits = sections.split(" ");
-            if (splits.length >= 2) {
-                question.setSection(splits[0].trim());
-                question.setSubSection(splits[1].trim());
-            } else {
-                question.setSubSection(splits[0]);
+        String subSection = QuestionUtil.findSubSection(plainTextContent);
+        if (Objects.nonNull(subSection)) {
+            String section = QuestionUtil.findSection(subSection);
+            if (Objects.nonNull(section)) {
+                section = section.trim().replaceAll("[．.、【\\[（\\(】\\]）\\)\\s]", "");
+                this.section = section;
+                subSection = subSection.trim().replaceAll("[一二三四五六七八九十]", "");
             }
+
+            subSection = subSection.trim().replaceAll("[．.、【\\[（\\(】\\]）\\)\\s]", "");
+            question.setSubSection(subSection);
         }
 
         question.setContent(content);
         question.setAppend(append);
         question.setAnswer(answer);
         question.setNote(note);
+        question.setSection(this.section);
         question.addLabels(labels.get(LabelTypeEnum.EXAM));
         question.addLabels(labels.get(LabelTypeEnum.CHAPTER));
         question.addLabels(realLabels);
@@ -163,5 +168,14 @@ public class StateMachineContext {
 
     public Collection<Question> getQuestions(){
         return questions.values();
+    }
+
+    public void setSection() {
+        String line = Jsoup.parse(this.line.getInnerText()).text();
+        String section = QuestionUtil.findSection(line);
+        if (Objects.nonNull(section)) {
+            section = section.trim().replaceAll("[．.、【\\[（\\(】\\]）\\)\\s]", "");
+            this.section = section;
+        }
     }
 }

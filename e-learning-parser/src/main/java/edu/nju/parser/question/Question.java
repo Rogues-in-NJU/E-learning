@@ -140,8 +140,7 @@ public class Question {
         return (content == null || content.isEmpty()) &&
                 (append == null || append.isEmpty()) &&
                 (answer == null || answer.isEmpty()) &&
-                (note == null || note.isEmpty()) &&
-                (labels == null || labels.isEmpty());
+                (note == null || note.isEmpty());
     }
 
     public void update(Question question){
