@@ -94,6 +94,6 @@ public class StateMachine {
         context.clearChapterLabels();
         context.cacheQuestion();
         context.clearQuestionMap();
-        context.storageAllQuestions();
+//        context.storageAllQuestions();
     }
 }
