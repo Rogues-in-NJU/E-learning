@@ -9,6 +9,7 @@ import edu.nju.parser.core.Tags;
 import edu.nju.parser.enums.QuestionPartTypeEnum;
 import edu.nju.parser.enums.LabelTypeEnum;
 import edu.nju.parser.question.Question;
+import edu.nju.parser.question.QuestionStorageUtil;
 import edu.nju.parser.util.QuestionUtil;
 import org.jsoup.Jsoup;
 
@@ -169,5 +170,11 @@ public class StateMachineContext {
 
     public Collection<Question> getQuestions(){
         return questions.values();
+    }
+
+    public void storageAllQuestions(){
+        for(Question question : getQuestions()){
+            QuestionStorageUtil.saveQuestion(question);
+        }
     }
 }

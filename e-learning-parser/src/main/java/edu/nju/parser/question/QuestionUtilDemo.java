@@ -14,9 +14,9 @@ public class QuestionUtilDemo {
         question.addLabels(labels);
         question.setAppend("{\"content\":\"json测试\",\"labels\":\"test\",\"type\":1}");
 
-        System.out.println(QuestionUtil.saveQuestion(question));
+        System.out.println(QuestionStorageUtil.saveQuestion(question));
 
-        List<Question> questions = QuestionUtil.getAllQuestions();
+        List<Question> questions = QuestionStorageUtil.getAllQuestions();
 
         System.out.println(questions.size());
     }

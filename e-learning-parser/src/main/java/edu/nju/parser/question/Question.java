@@ -150,7 +150,7 @@ public class Question {
         this.content = question.getContent();
         this.append = question.getAppend();
         this.answer = question.getAnswer();
-        this.note = question.getNote();
+            this.note = question.getNote();
         addLabels(question.getLabels());
     }
 }
