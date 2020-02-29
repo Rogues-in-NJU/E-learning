@@ -14,12 +14,12 @@ public class Paragraph {
     private String innerText;
 
     /**
-     * 不包含段落最外层<p>标签
+     * 包含段落最外层<p>标签
      * */
     private String html;
 
     /**
-     * 包含段落最外层<p>标签
+     * 包含父标签
      * */
     private String outerHtml;
 
