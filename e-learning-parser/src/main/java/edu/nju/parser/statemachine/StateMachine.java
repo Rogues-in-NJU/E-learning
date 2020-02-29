@@ -86,10 +86,14 @@ public class StateMachine {
 
     }
 
+    /**
+     * 这个状态机结束时，可以存储所有缓存的题目。默认关闭
+     */
     public void close(){
         context.clearExamLabels();
         context.clearChapterLabels();
         context.cacheQuestion();
         context.clearQuestionMap();
+//        context.storageAllQuestions();
     }
 }

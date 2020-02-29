@@ -14,7 +14,6 @@ import javax.validation.Valid;
 import java.net.URLDecoder;
 import java.util.List;
 
-@Slf4j
 @Validated
 @RestController
 @RequestMapping(value = "/api/question")

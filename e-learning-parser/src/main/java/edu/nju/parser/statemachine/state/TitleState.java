@@ -33,6 +33,7 @@ public class TitleState extends StateObject {
         //todo 根据标题提取公共标签
         context.clearChapterLabels();
 
+        context.setSection();
         context.addLabels(QuestionUtil.getTitleType(context.getLine()));
     }
 

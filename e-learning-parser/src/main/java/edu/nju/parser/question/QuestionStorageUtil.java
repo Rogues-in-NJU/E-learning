@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 
 import java.util.List;
 
-public class QuestionUtil {
+public class QuestionStorageUtil {
 
 
     static String URL = "http://localhost:8080/api/question";
@@ -24,7 +24,7 @@ public class QuestionUtil {
     public static String saveQuestion(Question question){
         String params = JSON.toJSONString(question);
 
-        System.out.println("save question json: " + params);
+//        System.out.println("save question json: " + params);
         String res = MyHttpClient.sendPost(URL , params);
         return res;
     }
