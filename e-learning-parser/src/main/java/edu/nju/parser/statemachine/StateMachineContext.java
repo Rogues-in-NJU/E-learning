@@ -66,7 +66,7 @@ public class StateMachineContext {
     }
 
     public void addLineToMap(QuestionPartTypeEnum questionPartTypeEnum){
-        questionParts.get(questionPartTypeEnum).append(line.getInnerText());
+        questionParts.get(questionPartTypeEnum).append(line.getHtml());
     }
 
     //TODO 完整地存题目，目前只存了4个信息
