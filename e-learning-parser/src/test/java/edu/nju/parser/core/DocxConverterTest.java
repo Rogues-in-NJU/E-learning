@@ -25,9 +25,12 @@ public class DocxConverterTest {
         File dir = new File(baseDir);
 
         DocxConverterConfig.DocxConverterConfigBuilder builder
-                = DocxConverterConfig.builder(baseDir + "/demo.docx", baseDir + "/html");
+                = DocxConverterConfig.builder("/Users/hermc/Downloads/aa.docx", baseDir + "/html");
         DocxConverter converter = new DocxConverter(builder.build());
         List<Paragraph> paragraphs = converter.convert2Paragraphs();
+        for (Paragraph p : paragraphs) {
+            System.out.println(p.getOuterHtml());
+        }
     }
 
     @Test
