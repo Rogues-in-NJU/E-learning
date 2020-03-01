@@ -1,6 +1,7 @@
 package edu.nju.service.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import edu.nju.service.common.ResponseResult;
 import edu.nju.service.entity.Question;
 import edu.nju.service.service.QuestionService;
@@ -56,14 +57,23 @@ public class QuestionController {
     @RequestMapping(value = "", method = RequestMethod.POST, name = "录入题目")
     public String addQuestion(@Valid @RequestBody String questionStr) {
         try {
-            System.out.println("before decode:" + questionStr);
+//            System.out.println("before decode:" + questionStr);
             String questionStrDecoded = URLDecoder.decode(questionStr, "utf-8");
-            questionStrDecoded = questionStrDecoded.substring(0, questionStrDecoded.length() - 1);
-            System.out.println("after  decode:" + questionStrDecoded);
-            Question question = JSON.parseObject(questionStrDecoded, Question.class);
+//            questionStrDecoded = questionStrDecoded.substring(0, questionStrDecoded.length() - 1);
+//            System.out.println("after  decode:" + questionStrDecoded);
+            Question question = JSON.parseObject(questionStrDecoded,Question.class);
+//            JSONObject jsonObject = JSON.parseObject(questionStrDecoded);
+//            Question question = new Question();
+//            question.setType((Integer)jsonObject.get("type"));
+//            question.setContent((String)jsonObject.get("content"));
+//            question.setAppend((String)jsonObject.get("append"));
+//            question.setAnswer((String)jsonObject.get("answer"));
+//            question.setNote((String)jsonObject.get("note"));
+//            question.setLabels((String)jsonObject.get("labels"));
             int result = questionService.saveQuestion(question);
             return JSON.toJSONString(result);
         } catch (Exception e) {
+            System.out.println(e);
             return JSON.toJSONString(e);
         }
     }

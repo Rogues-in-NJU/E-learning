@@ -179,7 +179,8 @@ public class StateMachineContext {
 
     public void storageAllQuestions() {
         for (Question question : getQuestions()) {
-            QuestionStorageUtil.saveQuestion(question);
+            String result = QuestionStorageUtil.saveQuestion(question);
+//            System.out.println(result);
         }
     }
 
