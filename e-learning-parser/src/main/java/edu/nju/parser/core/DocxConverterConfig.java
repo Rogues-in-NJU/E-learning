@@ -3,6 +3,7 @@ package edu.nju.parser.core;
 import com.google.common.base.Preconditions;
 import edu.nju.parser.core.plugin.Plugin;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,10 +25,10 @@ public class DocxConverterConfig {
             }
 
             config.docxFilePath = docxFilePath;
-            config.htmlFileName = docxFilePath.substring(docxFilePath.lastIndexOf("/") + 1,
+            config.htmlFileName = docxFilePath.substring(docxFilePath.lastIndexOf(File.separator) + 1,
                     docxFilePath.lastIndexOf(".") != -1 ? docxFilePath.lastIndexOf(".") : docxFilePath.length()) + ".html";
             config.htmlFileOutputDirPath = htmlFileOutputPath;
-            config.imageDirPath = htmlFileOutputPath + "/images";
+            config.imageDirPath = htmlFileOutputPath + File.separator + "images";
             config.imageTargetUri = "images";
             config.plugins = new LinkedList<>();
         }
