@@ -5,7 +5,7 @@ import edu.nju.parser.common.Paragraph;
 import edu.nju.parser.core.plugin.Plugin;
 import edu.nju.parser.core.plugin.PostConvertPlugin;
 import edu.nju.parser.core.plugin.PreConvertPlugin;
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
 import org.docx4j.Docx4J;
 import org.docx4j.Docx4jProperties;
 import org.docx4j.convert.out.HTMLSettings;
@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@Slf4j
+//@Slf4j
 public class DocxConverter {
 
     private DocxConverterConfig config;
@@ -72,7 +72,9 @@ public class DocxConverter {
     }
 
     public void docxFile2HtmlFile() throws Docx4JException, FileNotFoundException {
-        log.debug("Start convert docx file [{}] to html file [{}]", config.getDocxFilePath(), config.getHtmlFileOutputDirPath());
+//        log.debug("Start convert docx file [{}] to html file [{}]", config.getDocxFilePath(), config.getHtmlFileOutputDirPath());
+        System.out.println("Start convert docx file " + config.getDocxFilePath() +
+                " to html file" +config.getHtmlFileOutputDirPath());
         WordprocessingMLPackage wordMLPackage = Docx4J.load(new File(config.getDocxFilePath()));
 
         HTMLSettings htmlSettings = Docx4J.createHTMLSettings();

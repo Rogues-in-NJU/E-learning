@@ -4,7 +4,7 @@ import de.innosystec.unrar.Archive;
 import de.innosystec.unrar.NativeStorage;
 import de.innosystec.unrar.exception.RarException;
 import de.innosystec.unrar.rarfile.FileHeader;
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-@Slf4j
+//@Slf4j
 public class UnCompressUtil {
 
     private static final int BUFFER_SIZE = 2048;
@@ -29,7 +29,8 @@ public class UnCompressUtil {
      * @param destDirPath 目标文件夹
      */
     public static void unzip(String srcFilePath, String destDirPath, String charset) throws IOException {
-        log.debug("Start unzip file [{}]", srcFilePath);
+//        log.debug("Start unzip file [{}]", srcFilePath);
+        System.out.println("Start unzip file " + srcFilePath);
         File srcFile = new File(srcFilePath);
         if (!srcFile.exists()) {
             throw new FileNotFoundException("目标文件不存在!");

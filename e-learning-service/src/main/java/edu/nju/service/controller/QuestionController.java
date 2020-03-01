@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import edu.nju.service.common.ResponseResult;
 import edu.nju.service.entity.Question;
 import edu.nju.service.service.QuestionService;
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

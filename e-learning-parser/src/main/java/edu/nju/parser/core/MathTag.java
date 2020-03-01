@@ -1,7 +1,7 @@
 package edu.nju.parser.core;
 
 import com.qianxinyao.analysis.jieba.keyword.TFIDFAnalyzer;
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-@Slf4j
+//@Slf4j
 public class MathTag implements Tag {
 
     private Set<String> originMathTags;

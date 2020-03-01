@@ -1,6 +1,6 @@
 package edu.nju.parser.util;
 
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-@Slf4j
+//@Slf4j
 public class FileUtil {
 
     /**
@@ -61,7 +61,8 @@ public class FileUtil {
                     try {
                         results.addAll(getAllFileName(f.getCanonicalPath()));
                     } catch (IOException e) {
-                        log.error(e.getMessage(), e);
+//                        log.error(e.getMessage(), e);
+                        System.err.println(e.getMessage());
                     }
                 }
             }
