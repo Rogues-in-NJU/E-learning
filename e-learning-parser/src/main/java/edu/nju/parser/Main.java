@@ -57,14 +57,14 @@ public class Main {
 
             Collection<Question> questions = context.getQuestions();
             try {
-                saveHtmlFile(dir, questions);
+                saveHtmlFile(dir, f, questions);
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
         }
     }
 
-    public static void saveHtmlFile(File dir, Collection<Question> questions) throws IOException {
+    public static void saveHtmlFile(File dir, File f, Collection<Question> questions) throws IOException {
         Document doc = Jsoup.parse("<!DOCTYPE html>\n" +
                 "<html>\n" +
                 "<head>\n" +
@@ -93,7 +93,10 @@ public class Main {
                     .append("<hr>");
         }
 
-        File file = new File(dir.getAbsolutePath() + File.separator + "html" + File.separator + "上海九年级几何专题复习 1三角形的有关概念.html");
+        String docxFilePath = f.getCanonicalPath();
+        String htmlFileName = docxFilePath.substring(docxFilePath.lastIndexOf(File.separator) + 1,
+                docxFilePath.lastIndexOf(".") != -1 ? docxFilePath.lastIndexOf(".") : docxFilePath.length()) + ".html";
+        File file = new File(dir.getAbsolutePath() + File.separator + "html" + File.separator + htmlFileName);
         if (!file.exists()) {
             file.createNewFile();
         }
