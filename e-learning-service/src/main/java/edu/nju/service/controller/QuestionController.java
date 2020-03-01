@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import com.alibaba.fastjson.JSON;
 
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.List;
 
@@ -56,11 +57,19 @@ public class QuestionController {
     @ResponseBody
     @RequestMapping(value = "", method = RequestMethod.POST, name = "录入题目")
     public String addQuestion(@Valid @RequestBody String questionStr) {
+//        try {
+            System.out.println("before decode:" + questionStr);
+        String questionStrDecoded = "{}";
         try {
-//            System.out.println("before decode:" + questionStr);
-            String questionStrDecoded = URLDecoder.decode(questionStr, "utf-8");
-//            questionStrDecoded = questionStrDecoded.substring(0, questionStrDecoded.length() - 1);
-//            System.out.println("after  decode:" + questionStrDecoded);
+            questionStrDecoded = URLDecoder.decode(questionStr, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        //todo 临时方案。百分号转码后有时出现一个=号。
+            if('=' == (questionStrDecoded.charAt(questionStrDecoded.length() - 1))){
+                questionStrDecoded = questionStrDecoded.substring(0, questionStrDecoded.length() - 1);
+            }
+            System.out.println("after  decode:" + questionStrDecoded);
             Question question = JSON.parseObject(questionStrDecoded,Question.class);
 //            JSONObject jsonObject = JSON.parseObject(questionStrDecoded);
 //            Question question = new Question();
@@ -72,10 +81,10 @@ public class QuestionController {
 //            question.setLabels((String)jsonObject.get("labels"));
             int result = questionService.saveQuestion(question);
             return JSON.toJSONString(result);
-        } catch (Exception e) {
-            System.out.println(e);
-            return JSON.toJSONString(e);
-        }
+//        } catch (Exception e) {
+//            System.out.println(e);
+//            return JSON.toJSONString(e);
+//        }
     }
 
 }

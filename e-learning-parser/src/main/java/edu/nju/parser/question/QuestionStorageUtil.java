@@ -2,6 +2,9 @@ package edu.nju.parser.question;
 
 import com.alibaba.fastjson.JSON;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.List;
 
 public class QuestionStorageUtil {
@@ -22,7 +25,12 @@ public class QuestionStorageUtil {
     }
 
     public static String saveQuestion(Question question){
-        String params = JSON.toJSONString(question);
+        String params = "{}";
+        try {
+            params = URLEncoder.encode(JSON.toJSONString(question), "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
 //        System.out.println("save question json: " + params);
         String res = MyHttpClient.sendPost(URL , params);
