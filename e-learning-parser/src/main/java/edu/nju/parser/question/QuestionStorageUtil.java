@@ -10,7 +10,7 @@ import java.util.List;
 public class QuestionStorageUtil {
 
 
-    static String URL = "http://localhost:8080/api/question";
+    static String URL = "http://123.57.9.228:8080/api/question";
 
     public static List<Question> getAllQuestions(){
         String res = MyHttpClient.sendGet(URL + "/list", "");
