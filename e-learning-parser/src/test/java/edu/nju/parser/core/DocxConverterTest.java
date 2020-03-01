@@ -22,13 +22,13 @@ public class DocxConverterTest {
 
     @Test
     public void testConvert() throws IOException, Docx4JException {
-        String baseDir = DocxConverter.class.getResource("/").getPath();
+        String baseDir = DocxConverter.class.getResource(File.separator).getPath();
         // Document document = converter.convert2Html();
 
         File dir = new File(baseDir);
 
         DocxConverterConfig.DocxConverterConfigBuilder builder
-                = DocxConverterConfig.builder(dir.getAbsolutePath() + "/demo.docx", baseDir + "/html");
+                = DocxConverterConfig.builder(dir.getAbsolutePath() + File.separator + "上海九年级几何专题复习 1三角形的有关概念.docx", baseDir + File.separator + "html");
         DocxConverter converter = new DocxConverter(builder.build());
         List<Paragraph> paragraphs = converter.convert2Paragraphs();
         // for (Paragraph p : paragraphs) {
@@ -76,7 +76,7 @@ public class DocxConverterTest {
                     .append("<hr>");
         }
 
-        File file = new File(dir.getAbsolutePath() + "/html/testgen.html");
+        File file = new File(dir.getAbsolutePath() + File.separator + "html" + File.separator + "上海九年级几何专题复习 1三角形的有关概念.html");
         if (!file.exists()) {
             file.createNewFile();
         }
@@ -93,7 +93,7 @@ public class DocxConverterTest {
 
     @Test
     public void test() {
-        String baseDir = DocxConverter.class.getResource("/").getPath();
+        String baseDir = DocxConverter.class.getResource(File.separator).getPath();
         // Document document = converter.convert2Html();
 
         File dir = new File(baseDir);

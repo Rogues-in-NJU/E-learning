@@ -8,8 +8,11 @@ import edu.nju.parser.statemachine.StateMachine;
 import edu.nju.parser.statemachine.StateMachineContext;
 import edu.nju.parser.util.FileUtil;
 import edu.nju.parser.util.QuestionUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
-import java.io.File;
+import java.io.*;
 import java.util.Collection;
 import java.util.List;
 
@@ -17,19 +20,23 @@ import java.util.List;
  * Created by alfred on 2020/2/17.
  */
 public class Main {
+
     public static void main(String[] args) {
-        String baseDir = DocxConverter.class.getResource("/").getPath();
+        String baseDir = args[0];
+//        String baseDir = DocxConverter.class.getResource(File.separator).getPath();
         // Document document = converter.convert2Html();
 
         File dir = new File(baseDir);
         List<File> files = FileUtil.getAllFile(dir, ".docx");
 
         for (File f: files) {
+            System.out.println(f + " 解析开始");
+
             StateMachineContext context = new StateMachineContext();
             StateMachine stateMachine = new StateMachine(context);
             try {
                 DocxConverterConfig.DocxConverterConfigBuilder builder
-                        = DocxConverterConfig.builder(f.getCanonicalPath(), baseDir + "/html");
+                        = DocxConverterConfig.builder(f.getCanonicalPath(), baseDir + File.separator + "html");
                 DocxConverter converter = new DocxConverter(builder.build());
                 List<Paragraph> paragraphs = converter.convert2Paragraphs();
 
@@ -45,11 +52,58 @@ public class Main {
                 System.out.println(e.getMessage());
             } finally {
                 stateMachine.close();
+                System.out.println(f + " 解析结束");
             }
+
             Collection<Question> questions = context.getQuestions();
-            for (Question q : questions) {
-                System.out.println(q.questionToString());
+            try {
+                saveHtmlFile(dir, questions);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
             }
         }
+    }
+
+    public static void saveHtmlFile(File dir, Collection<Question> questions) throws IOException {
+        Document doc = Jsoup.parse("<!DOCTYPE html>\n" +
+                "<html>\n" +
+                "<head>\n" +
+                "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "</body>\n" +
+                "</html>");
+        for (Question q : questions) {
+            String c = "<div>题目: " + q.getContent() + "</div>";
+            String ap = "";
+            String an = "";
+            String n = "";
+            if (!StringUtils.isBlank(q.getAppend())) {
+                ap = "<div>选项: " + q.getAppend() + "</div>";
+            }
+            if (!StringUtils.isBlank(q.getAnswer())) {
+                an = "<div>答案: " + q.getAnswer() + "</div>";
+            }
+            if (!StringUtils.isBlank(q.getNote())) {
+                n = "<div>讲义: " + q.getNote() + "</div>";
+            }
+            String labels = "<div>标签: " + StringUtils.join(q.getLabels(), " | ") + "</div>";
+            doc.select("body")
+                    .append("<div>" + c + ap + an + n + labels + "</div>")
+                    .append("<hr>");
+        }
+
+        File file = new File(dir.getAbsolutePath() + File.separator + "html" + File.separator + "上海九年级几何专题复习 1三角形的有关概念.html");
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+
+        BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"utf-8"));
+
+        bufferedWriter.write(doc.html());
+        bufferedWriter.flush();
+        bufferedWriter.close();
+
+        System.out.println(file + " 生成成功");
     }
 }
