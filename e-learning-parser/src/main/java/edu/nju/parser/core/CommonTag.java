@@ -2,10 +2,7 @@ package edu.nju.parser.core;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -15,9 +12,11 @@ public class CommonTag implements Tag {
 
     public CommonTag() {
         originCommonTags = new LinkedList<>();
-        File math = new File(MathTag.class.getResource("/common.csv").getPath());
+        InputStream mathInputStream = MathTag.class.getResourceAsStream("/common.csv");
+        InputStreamReader inputStreamReader = new InputStreamReader(mathInputStream);
+//        File math = new File(MathTag.class.getResource("/common.csv").getPath());
         try {
-            BufferedReader br = new BufferedReader(new FileReader(math));
+            BufferedReader br = new BufferedReader(inputStreamReader);
             String line;
             while ((line = br.readLine()) != null) {
                 line = line.trim();

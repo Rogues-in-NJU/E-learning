@@ -3,10 +3,7 @@ package edu.nju.parser.core;
 import com.qianxinyao.analysis.jieba.keyword.TFIDFAnalyzer;
 //import lombok.extern.slf4j.Slf4j;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,9 +16,11 @@ public class MathTag implements Tag {
 
     public MathTag() {
         originMathTags = new HashSet<>();
-        File math = new File(MathTag.class.getResource("/math.csv").getPath());
+        InputStream mathInputStream = MathTag.class.getResourceAsStream("/math.csv");
+        InputStreamReader inputStreamReader = new InputStreamReader(mathInputStream);
+//        File math = new File(MathTag.class.getResource("/math.csv").getPath());
         try {
-            BufferedReader br = new BufferedReader(new FileReader(math));
+            BufferedReader br = new BufferedReader(inputStreamReader);
             String line;
             while ((line = br.readLine()) != null) {
                 originMathTags.add(line.trim());
