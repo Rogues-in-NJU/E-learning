@@ -6,6 +6,7 @@ import edu.nju.parser.core.plugin.Plugin;
 import edu.nju.parser.core.plugin.PostConvertPlugin;
 import edu.nju.parser.core.plugin.PreConvertPlugin;
 //import lombok.extern.slf4j.Slf4j;
+import edu.nju.parser.util.WmfUtil;
 import org.docx4j.Docx4J;
 import org.docx4j.Docx4jProperties;
 import org.docx4j.convert.out.HTMLSettings;
@@ -58,6 +59,9 @@ public class DocxConverter {
         if (Objects.isNull(document)) {
             return null;
         }
+
+        convertWmfImages(document);
+
         Elements elements = document.select("p");
         List<Paragraph> paragraphs = elements.stream().map(e -> {
             Paragraph p = Paragraph.builder()
@@ -95,8 +99,25 @@ public class DocxConverter {
         Docx4J.toHTML(htmlSettings, os, Docx4J.FLAG_EXPORT_PREFER_XSL);
     }
 
-    public void convertImagesToLatex(Element e) {
-
+    public void convertWmfImages(Document document) {
+        Elements elements = document.select("img");
+        elements.forEach(e -> {
+            try {
+                String imageUrl = e.attr("src");
+                if (imageUrl.endsWith(".wmf")) {
+                    String imageName = imageUrl.substring(config.getImageTargetUri().length());
+                    if (imageName.startsWith("/")) {
+                        imageName = imageName.substring(1);
+                    }
+                    String imagePath = config.getImageDirPath() + "/" + imageName;
+                    WmfUtil.convert(imagePath);
+                    imageUrl = imageUrl.replace(".wmf", ".png");
+                    e.attr("src", imageUrl);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 
 }

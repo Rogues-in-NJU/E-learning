@@ -28,7 +28,7 @@ public class DocxConverterTest {
         File dir = new File(baseDir);
 
         DocxConverterConfig.DocxConverterConfigBuilder builder
-                = DocxConverterConfig.builder(dir.getAbsolutePath() + File.separator + "上海九年级几何专题复习 1三角形的有关概念.docx", baseDir + File.separator + "html");
+                = DocxConverterConfig.builder(dir.getAbsolutePath() + File.separator + "a.docx", baseDir + File.separator + "html");
         DocxConverter converter = new DocxConverter(builder.build());
         List<Paragraph> paragraphs = converter.convert2Paragraphs();
         // for (Paragraph p : paragraphs) {
@@ -76,7 +76,7 @@ public class DocxConverterTest {
                     .append("<hr>");
         }
 
-        File file = new File(dir.getAbsolutePath() + File.separator + "html" + File.separator + "上海九年级几何专题复习 1三角形的有关概念.html");
+        File file = new File(dir.getAbsolutePath() + File.separator + "html" + File.separator + "a2.html");
         if (!file.exists()) {
             file.createNewFile();
         }
