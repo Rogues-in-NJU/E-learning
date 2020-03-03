@@ -5,7 +5,7 @@ import edu.nju.parser.common.Paragraph;
 import edu.nju.parser.core.plugin.Plugin;
 import edu.nju.parser.core.plugin.PostConvertPlugin;
 import edu.nju.parser.core.plugin.PreConvertPlugin;
-//import lombok.extern.slf4j.Slf4j;
+import edu.nju.parser.util.ImgUtil;
 import edu.nju.parser.util.WmfUtil;
 import org.docx4j.Docx4J;
 import org.docx4j.Docx4jProperties;
@@ -14,7 +14,6 @@ import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.*;
@@ -22,6 +21,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+//import lombok.extern.slf4j.Slf4j;
+
 
 //@Slf4j
 public class DocxConverter {
@@ -60,7 +62,7 @@ public class DocxConverter {
             return null;
         }
 
-        convertWmfImages(document);
+        convertImages(document);
 
         Elements elements = document.select("p");
         List<Paragraph> paragraphs = elements.stream().map(e -> {
@@ -99,7 +101,7 @@ public class DocxConverter {
         Docx4J.toHTML(htmlSettings, os, Docx4J.FLAG_EXPORT_PREFER_XSL);
     }
 
-    public void convertWmfImages(Document document) {
+    public void convertImages(Document document) {
         Elements elements = document.select("img");
         elements.forEach(e -> {
             try {
@@ -110,8 +112,17 @@ public class DocxConverter {
                         imageName = imageName.substring(1);
                     }
                     String imagePath = config.getImageDirPath() + "/" + imageName;
-                    WmfUtil.convert(imagePath);
+                    ImgUtil.wmf2Png(imagePath);
                     imageUrl = imageUrl.replace(".wmf", ".png");
+                    e.attr("src", imageUrl);
+                } else if (imageUrl.endsWith(".emf")) {
+                    String imageName = imageUrl.substring(config.getImageTargetUri().length());
+                    if (imageName.startsWith("/")) {
+                        imageName = imageName.substring(1);
+                    }
+                    String imagePath = config.getImageDirPath() + "/" + imageName;
+                    ImgUtil.emf2Png(imagePath);
+                    imageUrl = imageUrl.replace(".emf", ".png");
                     e.attr("src", imageUrl);
                 }
             } catch (Exception ex) {

@@ -28,7 +28,7 @@ public class DocxConverterTest {
         File dir = new File(baseDir);
 
         DocxConverterConfig.DocxConverterConfigBuilder builder
-                = DocxConverterConfig.builder(dir.getAbsolutePath() + File.separator + "a.docx", baseDir + File.separator + "html");
+                = DocxConverterConfig.builder(dir.getAbsolutePath() + File.separator + "初三自主招生教学案07：整式.docx", baseDir + File.separator + "html");
         DocxConverter converter = new DocxConverter(builder.build());
         List<Paragraph> paragraphs = converter.convert2Paragraphs();
         // for (Paragraph p : paragraphs) {

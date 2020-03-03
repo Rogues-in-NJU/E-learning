@@ -19,11 +19,11 @@ public class WmfUtil {
 
     public static String convert(String path) {
         try {
-            String svgFile = replace(path, "wmf", "svg");
+            String svgFile = ImgUtil.replace(path, "wmf", "svg");
             wmfToSvg(path, svgFile);
-            String jpgFile = replace(path, "wmf", "png");
-            svgToPng(svgFile, jpgFile);
-            return jpgFile;
+            String pngFile = ImgUtil.replace(path, "wmf", "png");
+            ImgUtil.svgToPng(svgFile, pngFile);
+            return pngFile;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -31,57 +31,6 @@ public class WmfUtil {
 
     }
 
-    public static String svgToPng(String src, String dest) {
-        FileOutputStream jpgOut = null;
-        FileInputStream svgStream = null;
-        ByteArrayOutputStream svgOut = null;
-        ByteArrayInputStream svgInputStream = null;
-        ByteArrayOutputStream jpg = null;
-        try {
-            // 获取到svg文件
-            File svg = new File(src);
-            svgStream = new FileInputStream(svg);
-            svgOut = new ByteArrayOutputStream();
-            // 获取到svg的stream
-            int noOfByteRead = 0;
-            while ((noOfByteRead = svgStream.read()) != -1) {
-                svgOut.write(noOfByteRead);
-            }
-            PNGTranscoder it = new PNGTranscoder();
-            // it.addTranscodingHint(JPEGTranscoder.KEY_QUALITY, new Float(0.9f));
-            // it.addTranscodingHint(ImageTranscoder.KEY_WIDTH, new Float(100));
-            jpg = new ByteArrayOutputStream();
-            svgInputStream = new ByteArrayInputStream(svgOut.toByteArray());
-            it.transcode(new TranscoderInput(svgInputStream),
-                    new TranscoderOutput(jpg));
-            jpgOut = new FileOutputStream(dest);
-            jpgOut.write(jpg.toByteArray());
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (svgInputStream != null) {
-                    svgInputStream.close();
-                }
-                if (jpg != null) {
-                    jpg.close();
-                }
-                if (svgStream != null) {
-                    svgStream.close();
-                }
-                if (svgOut != null) {
-                    svgOut.close();
-                }
-                if (jpgOut != null) {
-                    jpgOut.flush();
-                    jpgOut.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return dest;
-    }
 
     /**
      * 将wmf转换为svg
@@ -122,30 +71,6 @@ public class WmfUtil {
         transformer.transform(new DOMSource(doc), new StreamResult(out));
         out.flush();
         out.close();
-    }
-
-    public static String replace(String original, String find, String replace) {
-        if (original == null || find == null || replace == null) {
-            return original;
-        }
-        int findLen = find.length();
-        int originalLen = original.length();
-        if (originalLen == 0 || findLen == 0) {
-            return original;
-        }
-        StringBuffer sb = new StringBuffer();
-        int begin = 0; //下次检索开始的位置
-        int i = original.indexOf(find); //找到的子串位置
-        while (i != -1) {
-            sb.append(original.substring(begin, i));
-            sb.append(replace);
-            begin = i + findLen;
-            i = original.indexOf(find, begin);
-        }
-        if (begin < originalLen) {
-            sb.append(original.substring(begin));
-        }
-        return sb.toString();
     }
 
 }

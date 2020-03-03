@@ -7,14 +7,15 @@ public class WmfUtilTest {
     @Test
     public void test() {
         //
-        // String path = WmfUtilTest.class.getResource("/").getPath();
-        //
+        String path = WmfUtilTest.class.getResource("/").getPath();
+
         // WmfUtil.convert(path + "/html/images/c5f01dc4-e052-44fa-8309-3d5405f28941image2.wmf");
 
+        ImgUtil.emf2Png(path + "/html/631feb88-e203-4cbe-a753-10f450bbbedbimage226.emf");
 
-        String test = "xxx.wmf";
+        // String test = "xxx.wmf";
 
-        System.out.println(test.replace(".wmf", ".png"));
+        // System.out.println(test.replace(".wmf", ".png"));
     }
 
 }
