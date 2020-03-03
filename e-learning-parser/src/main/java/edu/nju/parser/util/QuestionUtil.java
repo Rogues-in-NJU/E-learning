@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 public class QuestionUtil {
 
     public static void main(String[] args) {
-        System.out.println(QuestionUtil.isAnswer("解答和证明："));
+        System.out.println(QuestionUtil.isContent("练习1：已知 "));
     }
 
     public static QuestionPartTypeEnum getParagraphType(Paragraph paragraph) {
@@ -74,6 +74,8 @@ public class QuestionUtil {
         patterns.add("\\s*\\d+\\s*[．\\.、]+(.|\\s)*");
         patterns.add("\\s*附\\s*加\\s*题\\s*[0-9一二三四五六七八九十]?\\s*[．\\.、：:]*(.|\\s)*");
         patterns.add("\\s*[【\\[（\\(]\\s*附\\s*加\\s*题\\s*[0-9一二三四五六七八九十]?\\s*[】\\]）\\)](.|\\s)*");
+        patterns.add("\\s*练\\s*习\\s*题?\\s*[0-9一二三四五六七八九十]?\\s*[．\\.、：:]*(.|\\s)*");
+        patterns.add("\\s*[【\\[（\\(]\\s*练\\s*习\\s*题?\\s*[0-9一二三四五六七八九十]?\\s*[】\\]）\\)](.|\\s)*");
         patterns.add("\\s*例\\s*[0-9一二三四五六七八九十题]?\\s*[．\\.、：:]*(.|\\s)*");
         patterns.add("\\s*[【\\[（\\(]\\s*例\\s*[0-9一二三四五六七八九十题]?\\s*[】\\]）\\)](.|\\s)*");
         patterns.add("\\s*变\\s*式\\s*与\\s*思\\s*考\\s*[．\\.、：:]*(.|\\s)*");
