@@ -6,7 +6,7 @@ import edu.nju.parser.core.plugin.Plugin;
 import edu.nju.parser.core.plugin.PostConvertPlugin;
 import edu.nju.parser.core.plugin.PreConvertPlugin;
 import edu.nju.parser.util.ImgUtil;
-import edu.nju.parser.util.WmfUtil;
+import edu.nju.parser.util.XWPFUtils;
 import org.docx4j.Docx4J;
 import org.docx4j.Docx4jProperties;
 import org.docx4j.convert.out.HTMLSettings;
@@ -16,6 +16,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import javax.xml.bind.JAXBException;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -78,9 +79,13 @@ public class DocxConverter {
     }
 
     public void docxFile2HtmlFile() throws Docx4JException, FileNotFoundException {
-//        log.debug("Start convert docx file [{}] to html file [{}]", config.getDocxFilePath(), config.getHtmlFileOutputDirPath());
         System.out.println("Start convert docx file " + config.getDocxFilePath() +
-                " to html file" +config.getHtmlFileOutputDirPath());
+                " to html file" + config.getHtmlFileOutputDirPath());
+        try {
+            XWPFUtils.convertImages(config.getDocxFilePath());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         WordprocessingMLPackage wordMLPackage = Docx4J.load(new File(config.getDocxFilePath()));
 
         HTMLSettings htmlSettings = Docx4J.createHTMLSettings();
