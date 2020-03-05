@@ -78,6 +78,13 @@
         </dependency>
 
         <dependency>
+            <groupId>com.huaban</groupId>
+            <artifactId>jacob</artifactId>
+            <systemPath>${project.basedir}/lib/jacob.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+
+        <dependency>
             <groupId>net.arnx</groupId>
             <artifactId>wmf2svg</artifactId>
             <version>0.9.5</version>

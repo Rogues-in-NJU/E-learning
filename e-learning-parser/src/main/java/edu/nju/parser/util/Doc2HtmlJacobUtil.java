@@ -38,8 +38,8 @@ public class Doc2HtmlJacobUtil {
     }
 
     public static void main(String[] args) {
-        String src = "/Users/alfred/Desktop/2017-2018年上海市建平中学高三上期中.doc";
-        docToHtml(src, "/Users/alfred/Desktop/2017-2018年上海市建平中学高三上期中.html");
+        String src = "C:\\Users\\Administrator\\Desktop\\test\\初三自主招生教学案07：整式.doc";
+        docToHtml(src, "C:\\Users\\Administrator\\Desktop\\test\\初三自主招生教学案07：整式.html");
     }
 }
 
