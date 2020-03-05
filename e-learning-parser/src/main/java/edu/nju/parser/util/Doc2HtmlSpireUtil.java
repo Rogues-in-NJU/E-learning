@@ -1,6 +1,7 @@
 package edu.nju.parser.util;
 
-
+import com.spire.doc.*;
+import com.spire.doc.documents.Paragraph;
 /**
  * Created by alfred on 2020/3/5.
  */
@@ -10,12 +11,9 @@ public class Doc2HtmlSpireUtil {
         //create a Document object
         Document doc = new Document();
         //load a Word file
-        doc.loadFromFile("C:\\Users\\Administrator\\Desktop\\sample.docx");
-        //save the first page to a BufferedImage
-        BufferedImage image = doc.saveToImages(0, ImageType.Bitmap);
-        //write the image data to a .png file
-        File file = new File("output/ToPNG.png");
-        ImageIO.write(image, "PNG", file);
+        doc.loadFromFile("sample.docx");
+        //save the first page to html
+        doc.SaveToFile("sample.html", FileFormat.Html);
     }
 
 }
