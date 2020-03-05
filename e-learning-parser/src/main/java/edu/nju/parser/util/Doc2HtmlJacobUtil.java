@@ -6,7 +6,7 @@ import com.jacob.com.Dispatch;
 /**
  * Created by alfred on 2020/3/5.
  */
-public class Doc2DocxUtil {
+public class Doc2HtmlJacobUtil {
     /**
      * convert doc to html
      *
