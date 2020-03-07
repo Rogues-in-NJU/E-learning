@@ -1,8 +1,5 @@
 package edu.nju.parser.util;
 
-import com.jacob.activeX.ActiveXComponent;
-import com.jacob.com.Dispatch;
-
 /**
  * Created by alfred on 2020/3/5.
  */
@@ -18,22 +15,22 @@ public class Doc2HtmlJacobUtil {
     }
 
     private static boolean convert(String inputFile, String saveFile, int format) {
-        ActiveXComponent app = null;
-        try {
-            app = new ActiveXComponent("Word.Application");
-            app.setProperty("Visible", false);
-            Dispatch docs = app.getProperty("Documents").toDispatch();
-            Dispatch doc = Dispatch.call(docs, "Open", inputFile, false, true)
-                    .toDispatch();
-            Dispatch.call(doc, "SaveAs2", saveFile, format);
-            Dispatch.call(doc, "Close", false);
-        } catch (Exception e) {
-            return false;
-        } finally {
-            if (app != null) {
-                app.invoke("Quit", 0);
-            }
-        }
+        // ActiveXComponent app = null;
+        // try {
+        //     app = new ActiveXComponent("Word.Application");
+        //     app.setProperty("Visible", false);
+        //     Dispatch docs = app.getProperty("Documents").toDispatch();
+        //     Dispatch doc = Dispatch.call(docs, "Open", inputFile, false, true)
+        //             .toDispatch();
+        //     Dispatch.call(doc, "SaveAs2", saveFile, format);
+        //     Dispatch.call(doc, "Close", false);
+        // } catch (Exception e) {
+        //     return false;
+        // } finally {
+        //     if (app != null) {
+        //         app.invoke("Quit", 0);
+        //     }
+        // }
         return true;
     }
 
