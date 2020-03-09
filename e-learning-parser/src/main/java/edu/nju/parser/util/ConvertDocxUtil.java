@@ -2,7 +2,6 @@ package edu.nju.parser.util;
 
 import com.spire.doc.Document;
 import com.spire.doc.FileFormat;
-import com.spire.pdf.FileFormat;
 import com.spire.pdf.PdfDocument;
 
 import java.io.File;
@@ -25,7 +24,7 @@ public class ConvertDocxUtil {
     private static File convertPdf(String path) {
         PdfDocument pdf = new PdfDocument(path);
         path = path.replace(".pdf", ".docx");
-        pdf.saveToFile(path, FileFormat.DOCX);
+        pdf.saveToFile(path, com.spire.pdf.FileFormat.DOCX);
         return new File(path);
     }
 

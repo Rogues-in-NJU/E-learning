@@ -1,10 +1,14 @@
 package edu.nju.parser.core;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.base.Preconditions;
+import edu.nju.parser.common.ImageLatex;
 import edu.nju.parser.common.Paragraph;
 import edu.nju.parser.core.plugin.Plugin;
 import edu.nju.parser.core.plugin.PostConvertPlugin;
 import edu.nju.parser.core.plugin.PreConvertPlugin;
+import edu.nju.parser.ocr.FormulaOCRClient;
+import edu.nju.parser.ocr.MathPixResult;
 import edu.nju.parser.util.ImgUtil;
 import edu.nju.parser.util.XWPFUtils;
 import org.docx4j.Docx4J;
@@ -14,11 +18,12 @@ import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import javax.xml.bind.JAXBException;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -67,11 +72,13 @@ public class DocxConverter {
 
         Elements elements = document.select("p");
         List<Paragraph> paragraphs = elements.stream().map(e -> {
+            List<ImageLatex> imageLatexes = convertLatex(e);
             Paragraph p = Paragraph.builder()
                     .innerText(Jsoup.parse(e.html()).text())
                     .html(e.html())
                     .html(e.outerHtml())
                     .originElement(e)
+                    .imageLatexes(imageLatexes)
                     .build();
             return p;
         }).collect(Collectors.toList());
@@ -134,6 +141,33 @@ public class DocxConverter {
                 ex.printStackTrace();
             }
         });
+    }
+
+    public List<ImageLatex> convertLatex(Element element) {
+        Elements elements = element.select("img");
+        List<ImageLatex> imageLatexes = new LinkedList<>();
+        elements.forEach(e -> {
+            try {
+                String imageUrl = e.attr("src");
+                if (imageUrl.endsWith(".png") || imageUrl.endsWith(".jpg")) {
+                    String imageName = imageUrl.substring(config.getImageTargetUri().length());
+                    if (imageName.startsWith("/")) {
+                        imageName = imageName.substring(1);
+                    }
+                    String imagePath = config.getImageDirPath() + "/" + imageName;
+                    MathPixResult result = FormulaOCRClient.img2Latex(imagePath);
+                    ImageLatex imageLatex = ImageLatex.builder()
+                            .imageUrl(imageUrl)
+                            .imageLatex(result.getLatex_styled()).build();
+                    imageLatexes.add(imageLatex);
+
+                    // System.out.println(JSON.toJSONString(imageLatex));
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+        return imageLatexes;
     }
 
 }

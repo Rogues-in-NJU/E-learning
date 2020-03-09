@@ -1,5 +1,6 @@
 package edu.nju.parser.core;
 
+import com.alibaba.fastjson.JSON;
 import edu.nju.parser.common.Paragraph;
 import edu.nju.parser.question.Question;
 import edu.nju.parser.statemachine.StateMachine;
@@ -28,7 +29,7 @@ public class DocxConverterTest {
         File dir = new File(baseDir);
 
         DocxConverterConfig.DocxConverterConfigBuilder builder
-                = DocxConverterConfig.builder(dir.getAbsolutePath() + File.separator + "初三自主招生教学案07：整式.docx", baseDir + File.separator + "html");
+                = DocxConverterConfig.builder(dir.getAbsolutePath() + File.separator + "a.docx", baseDir + File.separator + "html");
         DocxConverter converter = new DocxConverter(builder.build());
         List<Paragraph> paragraphs = converter.convert2Paragraphs();
         // for (Paragraph p : paragraphs) {
@@ -41,6 +42,7 @@ public class DocxConverterTest {
         for (Paragraph p : paragraphs) {
             // 解析出一行后 调用 正则判断 出类别
             // 然后用状态机辅助判断
+            System.out.println(JSON.toJSONString(p.getImageLatexes()));
             context.setLine(p);
             stateMachine.execute(QuestionUtil.getParagraphType(p));
         }

@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 import org.jsoup.nodes.Element;
 
+import java.util.List;
+
 @Builder
 @Data
 public class Paragraph {
@@ -27,5 +29,10 @@ public class Paragraph {
      * 原始html元素封装
      * */
     private Element originElement;
+
+    /**
+     * 存储图片src和对应图片分析出的latex
+     * */
+    private List<ImageLatex> imageLatexes;
 
 }
