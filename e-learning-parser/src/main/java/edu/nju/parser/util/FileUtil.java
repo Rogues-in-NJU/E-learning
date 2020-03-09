@@ -27,7 +27,12 @@ public class FileUtil {
             if (target.getName().endsWith(suffix)) {
                 return Collections.singletonList(target);
             } else {
-                return new LinkedList<>();
+                target = ConvertDocxUtil.convert(target.getPath());
+                if (target != null) {
+                    return Collections.singletonList(target);
+                } else {
+                    return new LinkedList<>();
+                }
             }
         } else {
             List<File> results = new LinkedList<>();
