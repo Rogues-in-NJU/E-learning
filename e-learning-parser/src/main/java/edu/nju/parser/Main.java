@@ -46,6 +46,7 @@ public class Main {
                     UnCompressUtil.unzip(baseDir + File.separator + f.getName(),
                             destDirPath, "UTF-8");
                 } catch (IOException ex) {
+                    System.out.println(f.getName() + "文件的编码格式可能不符合规范！");
                     ex.printStackTrace();
                 }
             }
@@ -65,6 +66,7 @@ public class Main {
                     UnCompressUtil.unrar(baseDir + File.separator + f.getName(),
                             destDirPath, "UTF-8");
                 } catch (IOException ex) {
+                    System.out.println(f.getName() + "文件的编码格式可能不符合规范！");
                     ex.printStackTrace();
                 } catch (RarException ex) {
                     ex.printStackTrace();
