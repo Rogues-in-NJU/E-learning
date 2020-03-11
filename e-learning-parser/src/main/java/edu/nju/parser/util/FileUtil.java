@@ -14,6 +14,34 @@ public class FileUtil {
 
     /**
      * 获取给定路径下所有扩展名为suffix的文件
+     * 对于非suffix文件，不做转换
+     *
+     * @param target 目标文件/文件夹
+     * @param suffix 文件扩展名
+     * @return 所有文件
+     * */
+    public static List<File> getAllFileWithoutConvert(File target, String suffix) {
+        if (!target.exists()) {
+            return new LinkedList<>();
+        }
+        if (target.isFile()) {
+            if (target.getName().endsWith(suffix)) {
+                return Collections.singletonList(target);
+            }
+        } else {
+            List<File> results = new LinkedList<>();
+            if (Objects.nonNull(target.listFiles())) {
+                for (File f: Objects.requireNonNull(target.listFiles())) {
+                    results.addAll(getAllFileWithoutConvert(f, suffix));
+                }
+            }
+            return results;
+        }
+        return new LinkedList<>();
+    }
+
+    /**
+     * 获取给定路径下所有扩展名为suffix的文件
      *
      * @param target 目标文件/文件夹
      * @param suffix 文件扩展名

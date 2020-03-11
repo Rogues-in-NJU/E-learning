@@ -1,5 +1,6 @@
 package edu.nju.parser;
 
+import de.innosystec.unrar.exception.RarException;
 import edu.nju.parser.common.Paragraph;
 import edu.nju.parser.core.DocxConverter;
 import edu.nju.parser.core.DocxConverterConfig;
@@ -8,12 +9,14 @@ import edu.nju.parser.statemachine.StateMachine;
 import edu.nju.parser.statemachine.StateMachineContext;
 import edu.nju.parser.util.FileUtil;
 import edu.nju.parser.util.QuestionUtil;
+import edu.nju.parser.util.UnCompressUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.*;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,11 +25,55 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        String baseDir = args[0];
+        String baseDir = "C:\\Users\\Administrator\\Desktop\\unzip";
 //        String baseDir = DocxConverter.class.getResource(File.separator).getPath();
         // Document document = converter.convert2Html();
 
         File dir = new File(baseDir);
+
+        //解压缩zip
+        List<File> zipFiles = FileUtil.getAllFileWithoutConvert(dir, ".zip");
+        for(File f : zipFiles){
+            //生成时间戳避免文件夹重名
+            String id = String.valueOf(new Date().getTime());
+            String destDirPath = baseDir + File.separator + f.getName() + id;
+            try {
+                UnCompressUtil.unzip(baseDir + File.separator + f.getName(),
+                        destDirPath, "GBK");
+            } catch (IOException e) {
+                //尝试换一个编码格式
+                try {
+                    UnCompressUtil.unzip(baseDir + File.separator + f.getName(),
+                            destDirPath, "UTF-8");
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        //解压缩rar
+        List<File> rarFiles = FileUtil.getAllFileWithoutConvert(dir, ".rar");
+        for(File f : rarFiles){
+            //生成时间戳避免文件夹重名
+            String id = String.valueOf(new Date().getTime());
+            String destDirPath = baseDir + File.separator + f.getName() + id;
+            try {
+                UnCompressUtil.unrar(baseDir + File.separator + f.getName(),
+                        destDirPath, "GBK");
+            } catch (IOException e) {
+                //尝试换一个编码格式
+                try {
+                    UnCompressUtil.unrar(baseDir + File.separator + f.getName(),
+                            destDirPath, "UTF-8");
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (RarException ex) {
+                    ex.printStackTrace();
+                }
+            } catch (RarException e) {
+                e.printStackTrace();
+            }
+        }
+
         List<File> files = FileUtil.getAllFile(dir, ".docx");
 
         for (File f: files) {

@@ -97,6 +97,7 @@ public class UnCompressUtil {
     }
 
     public static void unrar(String srcFilePath, String destDirPath, String charset) throws IOException, RarException {
+        System.out.println("Start unrar file " + srcFilePath);
         Archive archive = null;
         FileOutputStream fos = null;
 
