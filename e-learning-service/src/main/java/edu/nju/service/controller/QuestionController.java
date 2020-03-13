@@ -3,6 +3,7 @@ package edu.nju.service.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import edu.nju.service.common.ResponseResult;
+import edu.nju.service.entity.ImageLatex;
 import edu.nju.service.entity.Question;
 import edu.nju.service.service.QuestionService;
 //import lombok.extern.slf4j.Slf4j;
@@ -56,7 +57,7 @@ public class QuestionController {
      */
     @ResponseBody
     @RequestMapping(value = "", method = RequestMethod.POST, name = "录入题目")
-    public String addQuestion(@Valid @RequestBody String questionStr) {
+    public void addQuestion(@Valid @RequestBody String questionStr) {
 //        try {
             System.out.println("before decode:" + questionStr);
         String questionStrDecoded = "{}";
@@ -79,12 +80,22 @@ public class QuestionController {
 //            question.setAnswer((String)jsonObject.get("answer"));
 //            question.setNote((String)jsonObject.get("note"));
 //            question.setLabels((String)jsonObject.get("labels"));
-            int result = questionService.saveQuestion(question);
-            return JSON.toJSONString(result);
+            questionService.saveQuestion(question);
 //        } catch (Exception e) {
 //            System.out.println(e);
 //            return JSON.toJSONString(e);
 //        }
+    }
+
+    /**
+     * 录入题目图片的Latex文本
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/latex", method = RequestMethod.POST, name = "录入题目图片的Latex文本")
+    public void addQuestionImageLatex(@Valid @RequestBody ImageLatex image) {
+        questionService.saveQuestionImageLatex(image);
     }
 
 }
