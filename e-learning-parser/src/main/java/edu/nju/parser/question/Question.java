@@ -15,7 +15,7 @@ public class Question {
 
     private String subSection = "";
 
-    private String content;
+    private StringBuilder content = new StringBuilder("");
 
     private String append;
 
@@ -65,12 +65,12 @@ public class Question {
     }
 
     public String getContent() {
-        return content;
+        return content.toString();
     }
 
     public void setContent(String content) {
-        if (this.content == null || this.content.isEmpty()) {
-            this.content = content;
+        if (this.content == null || this.content.toString().isEmpty()) {
+            this.content = new StringBuilder(content);
         }
     }
 
@@ -137,7 +137,7 @@ public class Question {
     }
 
     public boolean isEmpty(){
-        return (content == null || content.isEmpty()) &&
+        return (content == null || content.toString().isEmpty()) &&
                 (append == null || append.isEmpty()) &&
                 (answer == null || answer.isEmpty()) &&
                 (note == null || note.isEmpty());
@@ -146,7 +146,7 @@ public class Question {
     public void update(Question question){
         this.section = question.getSection();
         this.subSection = question.getSubSection();
-        this.content = question.getContent();
+        this.content.append(question.getContent());
         this.append = question.getAppend();
         this.answer = question.getAnswer();
             this.note = question.getNote();
