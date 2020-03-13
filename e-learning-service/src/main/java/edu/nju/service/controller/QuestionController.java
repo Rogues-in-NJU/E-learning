@@ -59,7 +59,7 @@ public class QuestionController {
     @RequestMapping(value = "", method = RequestMethod.POST, name = "录入题目")
     public void addQuestion(@Valid @RequestBody String questionStr) {
 //        try {
-            System.out.println("before decode:" + questionStr);
+        System.out.println("before decode:" + questionStr);
         String questionStrDecoded = "{}";
         try {
             questionStrDecoded = URLDecoder.decode(questionStr, "utf-8");
@@ -94,8 +94,21 @@ public class QuestionController {
      */
     @ResponseBody
     @RequestMapping(value = "/latex", method = RequestMethod.POST, name = "录入题目图片的Latex文本")
-    public void addQuestionImageLatex(@Valid @RequestBody ImageLatex image) {
-        questionService.saveQuestionImageLatex(image);
+    public void addQuestionImageLatex(@Valid @RequestBody String imageStr) {
+        System.out.println("before decode:" + imageStr);
+        String imageStrDecoded = "{}";
+        try {
+            imageStrDecoded = URLDecoder.decode(imageStr, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        //todo 临时方案。百分号转码后有时出现一个=号。
+        if('=' == (imageStrDecoded.charAt(imageStrDecoded.length() - 1))){
+            imageStrDecoded = imageStrDecoded.substring(0, imageStrDecoded.length() - 1);
+        }
+        System.out.println("after  decode:" + imageStrDecoded);
+        ImageLatex imageLatex = JSON.parseObject(imageStrDecoded,ImageLatex.class);
+        questionService.saveQuestionImageLatex(imageLatex);
     }
 
 }

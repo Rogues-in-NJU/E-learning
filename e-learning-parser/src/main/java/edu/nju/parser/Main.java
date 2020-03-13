@@ -27,7 +27,7 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        String baseDir = "C:\\Users\\Administrator\\Desktop\\unzip";
+        String baseDir = args[0];
 //        String baseDir = DocxConverter.class.getResource(File.separator).getPath();
         // Document document = converter.convert2Html();
 
