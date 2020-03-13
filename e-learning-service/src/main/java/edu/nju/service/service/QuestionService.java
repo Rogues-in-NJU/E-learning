@@ -1,5 +1,6 @@
 package edu.nju.service.service;
 
+import edu.nju.service.entity.ImageLatex;
 import edu.nju.service.entity.Question;
 
 import java.util.List;
@@ -10,5 +11,7 @@ public interface QuestionService {
 
     Question getQuestion(Integer id);
 
-    int saveQuestion(Question question);
+    void saveQuestion(Question question);
+
+    void saveQuestionImageLatex(ImageLatex image);
 }

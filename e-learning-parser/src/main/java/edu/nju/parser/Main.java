@@ -1,10 +1,12 @@
 package edu.nju.parser;
 
 import de.innosystec.unrar.exception.RarException;
+import edu.nju.parser.common.ImageLatex;
 import edu.nju.parser.common.Paragraph;
 import edu.nju.parser.core.DocxConverter;
 import edu.nju.parser.core.DocxConverterConfig;
 import edu.nju.parser.question.Question;
+import edu.nju.parser.question.QuestionStorageUtil;
 import edu.nju.parser.statemachine.StateMachine;
 import edu.nju.parser.statemachine.StateMachineContext;
 import edu.nju.parser.util.FileUtil;
@@ -25,7 +27,7 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        String baseDir = "C:\\Users\\Administrator\\Desktop\\unzip";
+        String baseDir = args[0];
 //        String baseDir = DocxConverter.class.getResource(File.separator).getPath();
         // Document document = converter.convert2Html();
 
@@ -92,7 +94,13 @@ public class Main {
                 for (Paragraph p : paragraphs) {
                     // 解析出一行后 调用 正则判断 出类别
                     // 然后用状态机辅助判断
-//                System.out.println(p.getInnerText());
+                    List<ImageLatex> images = p.getImageLatexes();
+                    if (images != null) {
+                        for (ImageLatex image: images) {
+                            QuestionStorageUtil.saveQuestionImageLatex(image);
+                        }
+                    }
+
                     context.setLine(p);
                     stateMachine.execute(QuestionUtil.getParagraphType(p));
                 }
