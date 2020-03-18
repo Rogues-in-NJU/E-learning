@@ -3,6 +3,7 @@ package edu.nju.service.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import edu.nju.service.common.ResponseResult;
+import edu.nju.service.entity.ImageLatex;
 import edu.nju.service.entity.Question;
 import edu.nju.service.service.QuestionService;
 //import lombok.extern.slf4j.Slf4j;
@@ -56,9 +57,9 @@ public class QuestionController {
      */
     @ResponseBody
     @RequestMapping(value = "", method = RequestMethod.POST, name = "录入题目")
-    public String addQuestion(@Valid @RequestBody String questionStr) {
+    public void addQuestion(@Valid @RequestBody String questionStr) {
 //        try {
-            System.out.println("before decode:" + questionStr);
+        System.out.println("before decode:" + questionStr);
         String questionStrDecoded = "{}";
         try {
             questionStrDecoded = URLDecoder.decode(questionStr, "utf-8");
@@ -79,12 +80,35 @@ public class QuestionController {
 //            question.setAnswer((String)jsonObject.get("answer"));
 //            question.setNote((String)jsonObject.get("note"));
 //            question.setLabels((String)jsonObject.get("labels"));
-            int result = questionService.saveQuestion(question);
-            return JSON.toJSONString(result);
+            questionService.saveQuestion(question);
 //        } catch (Exception e) {
 //            System.out.println(e);
 //            return JSON.toJSONString(e);
 //        }
+    }
+
+    /**
+     * 录入题目图片的Latex文本
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/latex", method = RequestMethod.POST, name = "录入题目图片的Latex文本")
+    public void addQuestionImageLatex(@Valid @RequestBody String imageStr) {
+        System.out.println("before decode:" + imageStr);
+        String imageStrDecoded = "{}";
+        try {
+            imageStrDecoded = URLDecoder.decode(imageStr, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        //todo 临时方案。百分号转码后有时出现一个=号。
+        if('=' == (imageStrDecoded.charAt(imageStrDecoded.length() - 1))){
+            imageStrDecoded = imageStrDecoded.substring(0, imageStrDecoded.length() - 1);
+        }
+        System.out.println("after  decode:" + imageStrDecoded);
+        ImageLatex imageLatex = JSON.parseObject(imageStrDecoded,ImageLatex.class);
+        questionService.saveQuestionImageLatex(imageLatex);
     }
 
 }

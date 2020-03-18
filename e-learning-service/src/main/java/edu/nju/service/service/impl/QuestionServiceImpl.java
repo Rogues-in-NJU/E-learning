@@ -1,6 +1,8 @@
 package edu.nju.service.service.impl;
 
+import edu.nju.service.entity.ImageLatex;
 import edu.nju.service.entity.Question;
+import edu.nju.service.repo.ImageRepository;
 import edu.nju.service.repo.QuestionRepository;
 import edu.nju.service.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Autowired
     QuestionRepository questionRepository;
+    @Autowired
+    ImageRepository imageRepository;
 
     @Override
     public List<Question> getQuestionList()
@@ -27,8 +31,12 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public int saveQuestion(Question question) {
+    public void saveQuestion(Question question) {
         questionRepository.save(question);
-        return 0;
+    }
+
+    @Override
+    public void saveQuestionImageLatex(ImageLatex image) {
+        imageRepository.save(image);
     }
 }
