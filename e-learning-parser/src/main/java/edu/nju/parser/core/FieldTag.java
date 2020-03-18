@@ -47,8 +47,4 @@ public class FieldTag implements Tag {
         }
         return tags;
     }
-
-    public static void main(String[] args) {
-
-    }
 }
