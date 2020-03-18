@@ -24,7 +24,11 @@ public class ConvertDocxUtil {
     private static File convertPdf(String path) {
         PdfDocument pdf = new PdfDocument(path);
         path = path.replace(".pdf", ".docx");
-        pdf.saveToFile(path, com.spire.pdf.FileFormat.DOCX);
+        try {
+            pdf.saveToFile(path, com.spire.pdf.FileFormat.DOCX);
+        }catch (Exception e){
+            System.out.println("PDF转换DOCX发生异常");
+        }
         return new File(path);
     }
 
@@ -32,7 +36,11 @@ public class ConvertDocxUtil {
         Document doc = new Document();
         doc.loadFromFile(path);
         path = path.replace(".doc", ".docx");
-        doc.saveToFile(path, FileFormat.Docx);
+        try {
+            doc.saveToFile(path, FileFormat.Docx);
+        }catch (Exception e){
+            System.out.println("DOC转换DOCX发生异常");
+        }
         return new File(path);
     }
 }
