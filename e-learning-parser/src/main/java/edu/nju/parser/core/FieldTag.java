@@ -4,26 +4,26 @@ import com.qianxinyao.analysis.jieba.keyword.TFIDFAnalyzer;
 //import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 //@Slf4j
-public class MathTag implements Tag {
+public class FieldTag implements Tag {
 
-    private Set<String> originMathTags;
+    private Set<String> originTags;
     private TFIDFAnalyzer analyzer = new TFIDFAnalyzer();
     private int topN = 10;
 
-    public MathTag() {
-        originMathTags = new HashSet<>();
-        InputStream mathInputStream = MathTag.class.getResourceAsStream("/math.csv");
-        InputStreamReader inputStreamReader = new InputStreamReader(mathInputStream);
-//        File math = new File(MathTag.class.getResource("/math.csv").getPath());
+    public FieldTag(File f) {
+        originTags = new HashSet<>();
+
         try {
+            InputStream mathInputStream = new FileInputStream(f);
+            InputStreamReader inputStreamReader = new InputStreamReader(mathInputStream);
             BufferedReader br = new BufferedReader(inputStreamReader);
+
             String line;
             while ((line = br.readLine()) != null) {
-                originMathTags.add(line.trim());
+                originTags.add(line.trim());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -40,7 +40,7 @@ public class MathTag implements Tag {
         //         tags.add(w.getName());
         //     }
         // });
-        for (String t : originMathTags) {
+        for (String t : originTags) {
             if (content.contains(t)) {
                 tags.add(t);
             }
@@ -48,4 +48,7 @@ public class MathTag implements Tag {
         return tags;
     }
 
+    public static void main(String[] args) {
+
+    }
 }
