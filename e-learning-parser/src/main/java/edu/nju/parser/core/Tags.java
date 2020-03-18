@@ -1,26 +1,25 @@
 package edu.nju.parser.core;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Tags {
 
-    private List<Tag> tagAnalyzers;
+    private Map<String, Tag> tagAnalyzers;
 
     public Tags() {
-        tagAnalyzers = new ArrayList<>();
+        tagAnalyzers = new HashMap<>();
     }
 
-    public void addTagAnalyzer(Tag tagAnalyzer) {
-        this.tagAnalyzers.add(tagAnalyzer);
+    public void addTagAnalyzer(String keyword, Tag tagAnalyzer) {
+        this.tagAnalyzers.put(keyword, tagAnalyzer);
     }
 
-    public Set<String> getTags(String content) {
+    public Set<String> getTags(String keyword, String content) {
         Set<String> tags = new HashSet<>();
-        tagAnalyzers.forEach(a -> tags.addAll(a.getTags(content)));
+        Tag tag = tagAnalyzers.get(keyword);
+        if (tag != null) {
+            tags.addAll(tag.getTags(content));
+        }
         return tags;
     }
-
 }

@@ -4,15 +4,18 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import edu.nju.parser.common.Paragraph;
 import edu.nju.parser.core.CommonTag;
-import edu.nju.parser.core.MathTag;
+import edu.nju.parser.core.FieldTag;
 import edu.nju.parser.core.Tags;
 import edu.nju.parser.enums.QuestionPartTypeEnum;
 import edu.nju.parser.enums.LabelTypeEnum;
 import edu.nju.parser.question.Question;
 import edu.nju.parser.question.QuestionStorageUtil;
+import edu.nju.parser.util.FileUtil;
 import edu.nju.parser.util.QuestionUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 
+import java.io.*;
 import java.util.*;
 
 public class StateMachineContext {
@@ -50,18 +53,24 @@ public class StateMachineContext {
         labels.put(LabelTypeEnum.CHAPTER, new HashSet<>());
 
         tags = new Tags();
-        tags.addTagAnalyzer(new MathTag());
-        tags.addTagAnalyzer(new CommonTag());
+        tags.addTagAnalyzer("common", new CommonTag());
+
+        File dir = new File(StateMachineContext.class.getResource("/tags").getPath());
+        List<File> tagFiles = FileUtil.getAllFileWithoutConvert(dir, ".csv");
+        for(File f : tagFiles){
+            String keyword = f.getName().replace(".csv", "");
+            tags.addTagAnalyzer(keyword, new FieldTag(f));
+        }
     }
 
     public void addLabels(LabelTypeEnum labelTypeEnum){
-        Set<String> realTags = new HashSet<>(tags.getTags(line.getInnerText()));
+        Set<String> realTags = new HashSet<>(tags.getTags("common", line.getInnerText()));
         labels.get(labelTypeEnum).addAll(realTags);
     }
 
     public void addPathLabels(String filePath) {
         if (Objects.nonNull(filePath)) {
-            labels.put(LabelTypeEnum.PATH, tags.getTags(filePath));
+            labels.put(LabelTypeEnum.PATH, tags.getTags("common", filePath));
         }
     }
 
@@ -84,10 +93,11 @@ public class StateMachineContext {
         String plainTextNote = Jsoup.parse(note).text();
 
         Set<String> realLabels = new HashSet<>();
-        realLabels.addAll(tags.getTags(plainTextContent));
-        realLabels.addAll(tags.getTags(plainTextAppend));
-        realLabels.addAll(tags.getTags(plainTextAnswer));
-        realLabels.addAll(tags.getTags(plainTextNote));
+        String[] keywords = getKeywords();
+        realLabels.addAll(tags.getTags(StringUtils.join(keywords, ""), plainTextContent));
+        realLabels.addAll(tags.getTags(StringUtils.join(keywords, ""), plainTextAppend));
+        realLabels.addAll(tags.getTags(StringUtils.join(keywords, ""), plainTextAnswer));
+        realLabels.addAll(tags.getTags(StringUtils.join(keywords, ""), plainTextNote));
 
         // 编号
         String subSection = QuestionUtil.findSubSection(plainTextContent);
@@ -191,5 +201,32 @@ public class StateMachineContext {
             section = section.trim().replaceAll("[．.、【\\[（\\(】\\]）\\)\\s]", "");
             this.section = section;
         }
+    }
+
+    private String[] getKeywords(){
+        String[] keywords = {"", ""};
+        Set<String> grades = new HashSet<>();
+        grades.add("小学");
+        grades.add("初中");
+        grades.add("高中");
+
+        //目前只支持年级、科目两类标签
+        //CHAPTER的label会覆盖EXAM的label
+        for(String label: labels.get(LabelTypeEnum.EXAM)){
+            if (grades.contains(label)) {
+                keywords[0] = label;
+            } else {
+                keywords[1] = label;
+            }
+        }
+        for(String label: labels.get(LabelTypeEnum.CHAPTER)){
+            if (grades.contains(label)) {
+                keywords[0] = label;
+            } else {
+                keywords[1] = label;
+            }
+        }
+
+        return keywords;
     }
 }
