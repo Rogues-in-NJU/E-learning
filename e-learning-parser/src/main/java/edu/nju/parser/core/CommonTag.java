@@ -12,9 +12,8 @@ public class CommonTag implements Tag {
 
     public CommonTag() {
         originCommonTags = new LinkedList<>();
-        InputStream mathInputStream = MathTag.class.getResourceAsStream("/common.csv");
+        InputStream mathInputStream = CommonTag.class.getResourceAsStream("/common.csv");
         InputStreamReader inputStreamReader = new InputStreamReader(mathInputStream);
-//        File math = new File(MathTag.class.getResource("/common.csv").getPath());
         try {
             BufferedReader br = new BufferedReader(inputStreamReader);
             String line;

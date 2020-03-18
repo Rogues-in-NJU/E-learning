@@ -1,14 +1,8 @@
 package edu.nju.parser.statemachine.state;
 
-import edu.nju.parser.core.MathTag;
-import edu.nju.parser.core.Tags;
 import edu.nju.parser.enums.QuestionPartTypeEnum;
-import edu.nju.parser.question.Question;
 import edu.nju.parser.statemachine.StateMachineContext;
 import edu.nju.parser.statemachine.StateObject;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.Set;
 
 public class ContentState extends StateObject {
 
