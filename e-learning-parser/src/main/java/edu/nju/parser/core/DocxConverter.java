@@ -147,7 +147,7 @@ public class DocxConverter {
         Elements elements = element.select("img");
         List<ImageLatex> imageLatexes = new LinkedList<>();
         elements.forEach(e -> {
-            try {
+//            try {
                 String imageUrl = e.attr("src");
                 if (imageUrl.endsWith(".png") || imageUrl.endsWith(".jpg")) {
                     String imageName = imageUrl.substring(config.getImageTargetUri().length());
@@ -155,17 +155,17 @@ public class DocxConverter {
                         imageName = imageName.substring(1);
                     }
                     String imagePath = config.getImageDirPath() + "/" + imageName;
-                    MathPixResult result = FormulaOCRClient.img2Latex(imagePath);
-                    ImageLatex imageLatex = ImageLatex.builder()
-                            .imageUrl(imageUrl)
-                            .imageLatex(result.getLatex_styled()).build();
-                    imageLatexes.add(imageLatex);
+//                    MathPixResult result = FormulaOCRClient.img2Latex(imagePath);
+//                    ImageLatex imageLatex = ImageLatex.builder()
+//                            .imageUrl(imageUrl)
+//                            .imageLatex(result.getLatex_styled()).build();
+//                    imageLatexes.add(imageLatex);
 
                     // System.out.println(JSON.toJSONString(imageLatex));
                 }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+//            } catch (IOException ex) {
+//                ex.printStackTrace();
+//            }
         });
         return imageLatexes;
     }
